@@ -23,7 +23,7 @@
             <router-link :to="'/dashboard/' + $root.token" class="nav-link">Dashboard</router-link>
           </li>
           <li class="nav-item" v-if="isConnected">
-            <router-link to="/dashboard" class="nav-link">Hotel</router-link>
+            <router-link :to="'/dashboard/hotel/' + $root.token" class="nav-link">Hotel</router-link>
           </li>
           <li class="nav-item" v-if="isConnected">
             <router-link to="/dashboard" class="nav-link">Chambres</router-link>
@@ -57,7 +57,17 @@ export default {
   name: 'Navbar',
   props: {
     isConnected: Boolean
+  },
+  mounted() {
+  const currentLink = window.location.pathname;
+  if (currentLink.startsWith("/dashboard/") && currentLink.split("/").pop().length > 0) {
+    const token = currentLink.split("/").pop();
+    this.$root.isConnected = true;
+    this.$root.token = token;
   }
+}
+
+
 }
 </script>
 
@@ -72,8 +82,56 @@ export default {
   .navbar-nav .nav-link {
     margin-right: 10px;
   }
+    /* Police de caractère et couleurs */
+    .navbar-brand,
+  .navbar-nav .nav-link {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #666;
+  }
+  .navbar-nav .active > .nav-link {
+    color: #007bff;
+  }
   
-</style>>
+  /* Ajout d'une bordure inférieure sur les liens */
+  .navbar-nav .nav-link {
+    border-bottom: 2px solid transparent;
+    transition: border-bottom-color 0.2s ease-in-out;
+  }
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .active > .nav-link {
+    border-bottom-color: #007bff;
+  }
+  
+  /* Animation du hamburger menu */
+  .navbar-toggler-icon {
+    width: 24px;
+    height: 17px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  .navbar-toggler-icon:hover {
+    transform: scale(1.1);
+  }
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    transform: rotate(90deg);
+  }
+  
+  /* Animation du dropdown menu */
+  .dropdown-menu {
+    opacity: 0;
+    transform: translate(0, -10px);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+  .dropdown-menu.show {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+</style>
 
 
 

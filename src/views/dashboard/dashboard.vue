@@ -55,61 +55,60 @@
             <div class="card-body container">
 
       <!-- Infos general hotel - employee -->
-            <div class="row">
-      <!-- Infos general hotel -->
+  <div class="row"  v-if="Object.keys(infos).length">
+    <!-- Hotel Info -->
+    <div class="col">
+      <h5>{{ infos.chainehoteliere.nom }}</h5>
+      <hr>
+      <div class="row mb-2">
+        <div class="col mb-2">
+          <strong>Hotel {{ infos.hotel.nom }}</strong>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col"><strong>Adresse :</strong></div>
+        <div class="col-md-9">{{ infos.hotel.rue }}, {{ infos.hotel.codePostal }}, {{ infos.hotel.ville }}</div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-md-3"><strong>Téléphone :</strong></div>
+        <div class="col-md-9">{{ infos.hotel.numeroTel }}</div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-md-3"><strong>E-mail :</strong></div>
+        <div class="col-md-9">{{ infos.hotel.email }}</div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-md-3"><strong>Classement :</strong></div>
+        <div class="col-md-9">{{ infos.hotel.classement }} étoiles</div>
+      </div>
+    </div>
+    <!-- Employee Info -->
+    <div class="col">
+      <div class="row mb-3">
+        <div class="col-12">
+          <h4>{{ infos.employe.prenom }} {{ infos.employe.nomFamille }}</h4>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Adresse :</strong></div>
+        <div class="col-md-9">{{ infos.employe.rue }}, {{ infos.employe.codePostal }}, {{ infos.employe.ville }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong> NAS :</strong></div>
+        <div class="col-md-9">{{ infos.employe.NASemploye }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Rôle :</strong></div>
+        <div class="col-md-9">Réceptionniste</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col m-3">
+          <button type="button" class="btn btn-outline-dark m-1">Modifier</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                <div class="col">
-                    <h5>Chaine Ibis</h5>
-              <hr>
-              <div class="row mb-2">
-                <div class="col mb-2"><strong>Hôtel Ibis Tulipe Harbez </strong></div>
-              </div>
-              <div class="row mb-1">
-                <div class="col"><strong>Adresse :</strong></div>
-                <div class="col-md-9">77 Avenue Gout de l'aventure , LMarzakh City</div>
-              </div>
-              <div class="row mb-1">
-                <div class="col-md-3"><strong>Téléphone :</strong></div>
-                <div class="col-md-9">+1 667 123 7777</div>
-              </div>
-              <div class="row mb-1">
-                <div class="col-md-3"><strong>E-mail :</strong></div>
-                <div class="col-md-9">HotelIbisTulipeHarbez@eHotel.com </div>
-              </div>
-        
-              <div class="row mb-1">
-                <div class="col-md-3"><strong>Classement :</strong></div>
-                <div class="col-md-9"> 5 étoiles</div>
-              </div>
-                </div>
-      <!-- Infos general  employee -->
-
-                <div class="col">
-                    <div class="row mb-3">
-                        <div class="col-12"><h4>John Doe</h4>
-                        </div>
-                      </div>
-                      
-                      <div class="row mb-2">
-                        <div class="col-md-3"><strong>Adresse :</strong></div>
-                        <div class="col-md-9"><span>456 Rue des Employés,  LMarzakh City, </span></div>
-                      </div>
-                      <div class="row mb-2">
-                        <div class="col-md-3"><strong> NAS :</strong></div>
-                        <div class="col-md-9"><span>300144667</span></div>
-                      </div>
-                      <div class="row mb-2">
-                        <div class="col-md-3"><strong>Rôle :</strong></div>
-                        <div class="col-md-9"><span>Réceptionniste</span></div>
-                        <div class="row mb-2">
-                            <div class="col m-3"><button type="button" class="btn btn-outline-dark m-1">Modifier</button>
-    
-    
-                            </div>
-                          </div>
-                      </div>
-                </div>
-            </div>
 
               <!-- Informations sur chambres -->
       <div class="row justify-content-center align-items-center g-2">
@@ -197,63 +196,66 @@
               <!-- Informations ChaineHoteliere -->
 
               <div class="row justify-content-center align-items-center g-2 rounded mb-2">
-                <div class="col rounded">
-                    <div class="accordion accordion-flush rounded" id="accordionFlushExample">
-                        <div class="accordion-item rounded" style="background-color: rgba(255,255,255,0.4);">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button style="background: rgba(0,0,0,0.3);" class="accordion-button collapsed text-white btn btn-outline-dark rounded-top
-                                " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    Informations sur la chaîne hôtelière
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-            
-                                <!-- Informations ChaineHoteliere -->
-            
-                                <div class="accordion-body p-4 rounded-bottom" style="background-color: rgba(255,255,255,0.4);">
-                                    <hr>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Nom :</strong></div>
-                                        <div class="col-md-8"><span>Ibis</span></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Nombre d'hôtels :</strong></div>
-                                        <div class="col-md-8"><span>10</span></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Rue :</strong></div>
-                                        <div class="col-md-8"><span>123 rue Taktouka</span></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Code postal :</strong></div>
-                                        <div class="col-md-8"><span>75001</span></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Ville :</strong></div>
-                                        <div class="col-md-8"><span>wlad sidi JesaisPas</span></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Email :</strong></div>
-                                        <div class="col-md-8"><span>ibis@ehotel.com</span></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Numéro de téléphone :</strong></div>
-                                        <div class="col-md-8"><span>+33 1 23 45 67 89</span></div>
-                                    </div>
-            
-                                </div>
-                            </div>
-                            <!-- Section Chambres -->
-            
-            
-                            <!-- Fin du contenu -->
-                        </div>
-            
-                    </div>
-            
-                </div>
-            
+  <div class="col rounded">
+    <div class="accordion accordion-flush rounded" id="accordionFlushExample">
+      <div class="accordion-item rounded" style="background-color: rgba(255,255,255,0.4);">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button style="background: rgba(0,0,0,0.3);" class="accordion-button collapsed text-white btn btn-outline-dark rounded-top" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            Informations sur la chaîne hôtelière
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+
+          <!-- Informations ChaineHoteliere -->
+
+          <div class="accordion-body p-4 rounded-bottom" style="background-color: rgba(255,255,255,0.4);">
+            <!-- Infos de la chaîne hôtelière -->
+            <div class="row mb-4">
+              <div class="col">
+                <h3>{{ infos.chainehoteliere.nom }}</h3>
+                <p>{{ infos.chainehoteliere.nombrehotel }} hôtels</p>
+              </div>
             </div>
+
+            <!-- Liste des bureaux -->
+            <div class="row">
+              <div class="col">
+                <h4>Bureaux</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Ville</th>
+                      <th>Adresse</th>
+                      <th>Téléphone</th>
+                      <th>E-mail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="bureau in infos.bureaux" :key="bureau.idBureau">
+                      <td><strong>{{ bureau.ville }}</strong></td>
+                      <td>{{ bureau.rue }}, {{ bureau.codePostal }}</td>
+                      <td>{{ bureau.numeroTel }}</td>
+                      <td>{{ bureau.email }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Section Chambres -->
+
+
+        <!-- Fin du contenu -->
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
             
       <!-- Tâches et événements du jour -->
 
@@ -349,6 +351,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .sidebar {
   background-color: #f8f9fa;
@@ -462,5 +465,68 @@ body {
   background-position: center;
   backdrop-filter: blur(3px);
 }
+
+/* Style for Hotel Chain Information Section */
+
+/* Accordion */
+.accordion-button {
+  background-color: #007bff;
+  color: #fff;
+  border-color: transparent;
+}
+
+.accordion-button:hover {
+  background-color: #0069d9;
+}
+
+/* Section background */
+.accordion-item {
+  background-color: #f8f9fa;
+}
+
+/* Section heading */
+.accordion-header {
+  background-color: #e9ecef;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
+/* Office list */
+ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+ul li {
+  margin-bottom: 1rem;
+}
+
+ul li strong {
+  font-weight: 600;
+}
+
+/* Office details */
+ul li ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+ul li ul li {
+  margin-bottom: 0.25rem;
+}
+
+/* Make the heading and subheading larger */
+h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
 
 </style>
