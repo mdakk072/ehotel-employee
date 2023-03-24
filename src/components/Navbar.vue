@@ -23,19 +23,20 @@
             <router-link :to="'/dashboard/' + $root.token" class="nav-link">Dashboard</router-link>
           </li>
           <li class="nav-item" v-if="isConnected">
+            <router-link :to="'/dashboard/chaine/' + $root.token" class="nav-link">Chaine</router-link>
+          </li>
+          <li class="nav-item" v-if="isConnected">
             <router-link :to="'/dashboard/hotel/' + $root.token" class="nav-link">Hotel</router-link>
           </li>
+         
           <li class="nav-item" v-if="isConnected">
-            <router-link to="/dashboard" class="nav-link">Chambres</router-link>
+            <router-link :to="'/dashboard/clients/' + $root.token" class="nav-link">Clients</router-link>
           </li>
           <li class="nav-item" v-if="isConnected">
-            <router-link to="/dashboard" class="nav-link">Clients</router-link>
+            <router-link :to="'/dashboard/reservation/' + $root.token" class="nav-link">Réservation</router-link>
           </li>
           <li class="nav-item" v-if="isConnected">
-            <router-link to="/dashboard" class="nav-link">Réservation</router-link>
-          </li>
-          <li class="nav-item" v-if="isConnected">
-            <router-link to="/dashboard" class="nav-link">Location</router-link>
+            <router-link :to="'/dashboard/location/' + $root.token" class="nav-link">Location</router-link>
           </li>
           
           <li class="nav-item" v-if="!isConnected">

@@ -62,7 +62,41 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/HotelView.vue')
+  },{
+    path: '/dashboard/chaine/:token',
+    name: 'ChaineView',
+    props: true ,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ChaineView.vue')
   },
+  ,{
+    path: '/dashboard/reservation/:token',
+    name: 'ReservationView',
+    props: true ,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ReservationView.vue')
+  },{
+    path: '/dashboard/location/:token',
+    name: 'LocationView',
+    props: true ,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/LocationView.vue')
+  },{
+    path: '/dashboard/clients/:token',
+    name: 'ClientView',
+    props: true ,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ClientView.vue')
+  },
+  
   
 ]
 
