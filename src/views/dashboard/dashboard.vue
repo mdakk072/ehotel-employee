@@ -1,200 +1,151 @@
 <template>
 
 <div class=" container-fluid mt-1 mb-1 p-2 c">
-
-      <!-- Raccourcis - STAT -->
-
-  <div class="row ">
-      <!-- Raccourcis -->
-
-    <div class="col">
-
-      <!-- Statistiques de l'hôtel -->
-      <div class="card bg-transparent">
-        <div class="card-header text-white bg-secondary">Raccourcis</div>
-        <div class="card-body">
-          <div class="list-group" >
-            <a href="#" class="btn btn-outline-dark m-1">Accéder à la réservation</a>
-            <a href="#" class="btn btn-outline-dark m-1">Créer une réservation</a>
-            <a href="#" class="btn btn-outline-dark m-1">Accéder à la location</a>
-            <a href="#" class="btn btn-outline-dark m-1">Créer une location</a>
-            <a href="#" class="btn btn-outline-dark m-1">Voir les disponibilités de chambres</a>
-          </div>
-        </div>
-      </div>
-      
-    </div>    
-      <!-- STAT -->
-      <div class="col-md-6 m-1">
-        <div class="card bg-transparent">
-          <div class="card-header">Statistiques</div>
-          <div class="card-body">
-            <h6>Nombre de réservations aujourd'hui</h6>
-            <p>3</p>
-            <hr>
-            <h6>Chambres occupées</h6>
-            <p>25</p>
-            <hr>
-            <h6>Taux d'occupation</h6>
-            <p>85%</p>
-            <hr>
-            <h6>Nombre de réservations annulées</h6>
-            <p>2</p>
-            <hr>
-            <h6>Nombre de clients enregistrés aujourd'hui</h6>
-            <p>5</p>
-          </div>
-        </div>
-      </div>
-</div>
       <!-- ## Infos general ## -->
       <div class="row justify-content-center align-items-center g-2">
         <div class="col">
           <div class="card bg-transparent">
             <div class="card-header">Informations générales</div>
             <div class="card-body container">
-
       <!-- Infos general hotel - employee -->
-  <div class="row"  v-if="Object.keys(infos).length">
-    <!-- Hotel Info -->
-    <div class="col">
-      <h5>{{ infos.chainehoteliere.nom }}</h5>
-      <hr>
-      <div class="row mb-2">
-        <div class="col mb-2">
-          <strong>Hotel {{ infos.hotel.nom }}</strong>
-        </div>
-      </div>
-      <div class="row mb-1">
-        <div class="col"><strong>Adresse :</strong></div>
-        <div class="col-md-9">{{ infos.hotel.rue }}, {{ infos.hotel.codePostal }}, {{ infos.hotel.ville }}</div>
-      </div>
-      <div class="row mb-1">
-        <div class="col-md-3"><strong>Téléphone :</strong></div>
-        <div class="col-md-9">{{ infos.hotel.numeroTel }}</div>
-      </div>
-      <div class="row mb-1">
-        <div class="col-md-3"><strong>E-mail :</strong></div>
-        <div class="col-md-9">{{ infos.hotel.email }}</div>
-      </div>
-      <div class="row mb-1">
-        <div class="col-md-3"><strong>Classement :</strong></div>
-        <div class="col-md-9">{{ infos.hotel.classement }} étoiles</div>
+ <!-- Infos general hotel - employee -->
+<div class="row" v-if="infos">
+  <!-- Hotel Info -->
+  <div class="col">
+    <h5>{{ infos.chainehoteliere.nom }}</h5>
+    <hr>
+    <div class="row mb-2">
+      <div class="col mb-2">
+        <strong>Hotel {{ infos.hotel.nom }}</strong>
       </div>
     </div>
-    <!-- Employee Info -->
-    <div class="col">
-      <div class="row mb-3">
-        <div class="col-12">
-          <h4>{{ infos.employe.prenom }} {{ infos.employe.nomFamille }}</h4>
-        </div>
+    <div class="row mb-1">
+      <div class="col"><strong>Adresse :</strong></div>
+      <div class="col-md-9">{{ infos.hotel.rue }}, {{ infos.hotel.codePostal }}, {{ infos.hotel.ville }}</div>
+    </div>
+    <div class="row mb-1">
+      <div class="col-md-3"><strong>Téléphone :</strong></div>
+      <div class="col-md-9">{{ infos.hotel.numeroTel }}</div>
+    </div>
+    <div class="row mb-1">
+      <div class="col-md-3"><strong>E-mail :</strong></div>
+      <div class="col-md-9">{{ infos.hotel.email }}</div>
+    </div>
+    <div class="row mb-1">
+      <div class="col-md-3"><strong>Classement :</strong></div>
+      <div class="col-md-9">{{ infos.hotel.classement }} étoiles</div>
+    </div>
+  </div>
+  <!-- Employee Info -->
+  <div class="col">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h4>{{ infos.employe.prenom }} {{ infos.employe.nomFamille }}</h4>
       </div>
-      <div class="row mb-2">
-        <div class="col-md-3"><strong>Adresse :</strong></div>
-        <div class="col-md-9">{{ infos.employe.rue }}, {{ infos.employe.codePostal }}, {{ infos.employe.ville }}</div>
-      </div>
-      <div class="row mb-2">
-        <div class="col-md-3"><strong> NAS :</strong></div>
-        <div class="col-md-9">{{ infos.employe.NASemploye }}</div>
-      </div>
-      <div class="row mb-2">
-        <div class="col-md-3"><strong>Rôle :</strong></div>
-        <div class="col-md-9">Réceptionniste</div>
-      </div>
-      <div class="row mb-2">
-        <div class="col m-3">
-          <button type="button" class="btn btn-outline-dark m-1">Modifier</button>
-        </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-3"><strong>Adresse :</strong></div>
+      <div class="col-md-9">{{ infos.employe.rue }}, {{ infos.employe.codePostal }}, {{ infos.employe.ville }}</div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-3"><strong> NAS :</strong></div>
+      <div class="col-md-9">{{ infos.employe.NASemploye }}</div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-3"><strong>Rôle :</strong></div>
+      <div class="col-md-9">Réceptionniste</div>
+    </div>
+    <div class="row mb-2">
+      <div class="col m-3">
+        <button type="button" class="btn btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#modifyEmployeeModal">Modifier</button>
+
       </div>
     </div>
   </div>
+</div>
+
+<!-- Informations sur chambres -->
+<div class="row justify-content-center align-items-center g-2" v-if="chambreInfo.chambres && chambreInfo.chambres.length">
+  <!-- chambres -->
+  <div class="col">
+    <div class="col-12">
+      <h4>Chambres</h4>
+    </div>
+    <hr>
+    <div class="row mb-3">
+      <div class="col-md-6"><strong>Nombre de chambres :</strong></div>
+      <div class="col-md-5"><span>{{ chambreInfo.chambres.length }}</span></div>
+    </div>
+    <div class="row mb-3" v-if="getCapaciteChambres()">
+      <div class="col-md-6"><strong>Capacité chambres:</strong></div>
+      <div class="col-md-5"><span>{{ getCapaciteChambres() }}</span></div>
+    </div>
+    <div class="row mb-3" v-if="getPrixMin()">
+      <div class="col-md-6"><strong>Prix :</strong></div>
+      <div class="col-md-5"><span>À partir de {{ getPrixMin() }}$ par nuit</span></div>
+    </div>
+    <div class="row mb-3" v-if="getEquipements()">
+      <div class="col-md-6"><strong>Équipements :</strong></div>
+      <div class="col-md-5"><span>{{ getEquipements() }}</span></div>
+    </div>
+    <div class="row mb-3" v-if="getVue()">
+      <div class="col-md-6"><strong>Vue :</strong></div>
+      <div class="col-md-5"><td class="text-truncate" style="max-width: 200px;">{{ getVue() }}</td></div>
+    </div>   
+    <div class="row mb-3" v-if="getDisponibilite()">
+      <div class="col-md-6"><strong>Disponibilité  :</strong></div>
+      <div class="col-md-5"><span>{{ getDisponibilite() }}</span></div>
+    </div>
+  </div>
+  <!--  sample chambres -->
+</div>
 
 
-              <!-- Informations sur chambres -->
-      <div class="row justify-content-center align-items-center g-2">
-              <!-- chambres -->
-
-                <div class="col-4">
-                  <div class="col-12">
-                    <h4>Chambres</h4>
-                  </div>
-                  <hr>
-                  <div class="row mb-3">
-                    <div class="col-md-6"><strong>Nombre de chambres :</strong></div>
-                    <div class="col-md-5"><span>100</span></div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-6"><strong>Capacité chambres:</strong></div>
-                    <div class="col-md-5"><span>Simple, Double, Suite</span></div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-6"><strong>Prix :</strong></div>
-                    <div class="col-md-5"><span>À partir de 100$ par nuit</span></div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-6"><strong>Équipements :</strong></div>
-                    <div class="col-md-5"><span>TV, climatisation, réfrigérateur, etc.</span></div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-6"><strong>Vue :</strong></div>
-                    <div class="col-md-5"><span>Mer, Montagne, Ville, Jardin, etc.</span></div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-6"><strong>Disponibilité  :</strong></div>
-                    <div class="col-md-5"><span> 34 chambres</span></div>
-                  </div>
-                </div>
-              <!--  sample chambres -->
-                
-              <div class="col-md-8 rounded p-2 ">
-                <table class="table table-striped table-hover rounded" style="opacity: 0.75;">
-                  <thead class="table-dark rounded">
-                    <tr >
-                      <th>Chambre</th>
-                      <th>Prix</th>
-                      <th>Capacité</th>
-                      <th>Disponible</th>
-                      <th>Vue</th>
-                      <th>Équipements</th>
-                      <th>Problème</th>
-                    </tr>
-                  </thead>
-                  <tbody class="rounded">
-                    <tr class="table-secondary">
-                      <td>Chambre la plus chère</td>
-                      <td>500$</td>
-                      <td>2 personnes</td>
-                      <td>Non</td>
-                      <td>Vue sur la mer</td>
-                      <td>TV, climatisation, minibar, etc.</td>
-                      <td>Non</td>
-                    </tr>
-                    <tr class="table-success">
-                      <td>Chambre disponible</td>
-                      <td>150$</td>
-                      <td>1 personne</td>
-                      <td>Oui</td>
-                      <td>Vue sur la ville</td>
-                      <td>TV, climatisation, réfrigérateur, etc.</td>
-                      <td>Non</td>
-                    </tr>
-                    <tr class="table-danger">
-                      <td>Chambre la moins chère</td>
-                      <td>100$</td>
-                      <td>1 personne</td>
-                      <td>Non</td>
-                      <td>Vue sur le jardin</td>
-                      <td>TV, climatisation, réfrigérateur, etc.</td>
-                      <td>Oui</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              
-                
-              </div>
+<div class="row">
+    <table class="table table-striped table-hover rounded" style="opacity: 0.75;">
+      <thead class="table-dark rounded">
+        <tr>
+          <th>Chambre</th>
+          <th>Prix</th>
+          <th>Capacité</th>
+          <th>Disponible</th>
+          <th>Vue</th>
+          <th>Équipements</th>
+          <th>Problème</th>
+        </tr>
+      </thead>
+      <tbody class="rounded">
+        <tr class="table-secondary">
+          <td>Chambre la plus chère</td>
+          <td>{{ getChambreLaPlusChere().prix }}$</td>
+          <td>{{ getChambreLaPlusChere().capaciteChambre }} personnes</td>
+          <td>{{ getChambreLaPlusChere().disponible ? 'Oui' : 'Non' }}</td>
+          <td class="text-truncate" style="max-width: 150px;">{{ getChambreLaPlusChere().vue }}</td>
+          <td>{{ getChambreLaPlusChere().commodites }}</td>
+          <td>{{ getChambreLaPlusChere().problemechambre ? 'Oui' : 'Non' }}</td>
+        </tr>
+        <tr class="table-success">
+          <td>Chambre disponible</td>
+          <td>{{ getPrixMin() }}$</td>
+          <td>1 personne</td>
+          <td>Oui</td>
+          <td class="text-truncate" style="max-width: 150px;">{{ getVue() }}</td>
+          <td>{{ getEquipements() }}</td>
+          <td>Non</td>
+        </tr>
+        <tr class="table-danger">
+          <td>Chambre la moins chère</td>
+          <td>{{ getPrixMin() }}$</td>
+          <td>1 personne</td>
+          <td>Non</td>
+          <td class="text-truncate" style="max-width: 150px;">{{ getVue() }}</td>
+          <td>{{ getEquipements() }}</td>
+          <td>Oui</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
               <!-- Informations ChaineHoteliere -->
-
               <div class="row justify-content-center align-items-center g-2 rounded mb-2">
   <div class="col rounded">
     <div class="accordion accordion-flush rounded" id="accordionFlushExample">
@@ -205,9 +156,7 @@
           </button>
         </h2>
         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-
           <!-- Informations ChaineHoteliere -->
-
           <div class="accordion-body p-4 rounded-bottom" style="background-color: rgba(255,255,255,0.4);">
             <!-- Infos de la chaîne hôtelière -->
             <div class="row mb-4">
@@ -216,7 +165,6 @@
                 <p>{{ infos.chainehoteliere.nombrehotel }} hôtels</p>
               </div>
             </div>
-
             <!-- Liste des bureaux -->
             <div class="row">
               <div class="col">
@@ -244,113 +192,205 @@
           </div>
         </div>
         <!-- Section Chambres -->
-
-
         <!-- Fin du contenu -->
       </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-            
-      <!-- Tâches et événements du jour -->
-
-<div class="row">
-  <div class="col-md-6">
-    <div class="card bg-transparent">
-      <div class="card-header">Tâches et événements du jour</div>
-      <div class="card-body bg-transparent">
-        <ul class="list-group">
-          <li style="background-color: rgba(255,255,255,0.4);" class=" border-dark list-group-item d-flex justify-content-between align-items-center">
-            Réunion avec le directeur marketing
-            <span class="badge badge-primary badge-pill text-black-50">10:00</span>
-          </li>
-          <li style="background-color: rgba(255,255,255,0.4);" class=" border-dark list-group-item d-flex justify-content-between align-items-center">
-            Préparer le rapport mensuel
-            <span class="badge badge-primary badge-pill text-black-50">13:00</span>
-          </li>
-          <li style="background-color: rgba(255,255,255,0.4);" class=" border-dark list-group-item d-flex justify-content-between align-items-center">
-            Rendez-vous avec le client ABC
-            <span class="badge badge-primary badge-pill text-black-50">15:00</span>
-          </li>
-          <li style="background-color: rgba(255,255,255,0.4);" class=" border-dark list-group-item d-flex justify-content-between align-items-center">
-            Ranger la chambre 69
-            <span class="badge badge-primary badge-pill text-black-50">11:30</span>
-          </li>
-          <li style="background-color: rgba(255,255,255,0.4);" class=" border-dark list-group-item d-flex justify-content-between align-items-center">
-            Préparer le menu pour la semaine prochaine
-            <span class="badge badge-primary badge-pill text-black-50">14:00</span>
-          </li>
-          <li style="background-color: rgba(255,255,255,0.4);" class=" border-dark list-group-item d-flex justify-content-between align-items-center">
-            Confirmer la réservation à venir avec le client XYZ
-            <span class="badge badge-primary badge-pill text-black-50">16:00</span>
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
+</div>     
+      <!-- Tâches et événements du jour -->    
+      </div>
+    </div>
+        </div>  
+      </div>
+    </div>
+
+    <div class="modal fade" id="modifyEmployeeModal" tabindex="-1" aria-labelledby="modifyEmployeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modifyEmployeeModalLabel">Modifier les informations de l'employé</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <!-- Informations sur chambres -->
+<form>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="prenom" class="form-label">Prénom :</label></div>
+    <div class="col-md-8"><input type="text" class="form-control" id="prenom" :value="infos.employe.prenom"></div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="nomFamille" class="form-label">Nom :</label></div>
+    <div class="col-md-8"><input type="text" class="form-control" id="nomFamille" :value="infos.employe.nomFamille"></div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="rue" class="form-label">Rue :</label></div>
+    <div class="col-md-8"><input type="text" class="form-control" id="rue" :value="infos.employe.rue"></div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="codePostal" class="form-label">Code postal :</label></div>
+    <div class="col-md-8"><input type="text" class="form-control" id="codePostal" :value="infos.employe.codePostal"></div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="ville" class="form-label">Ville :</label></div>
+    <div class="col-md-8"><input type="text" class="form-control" id="ville" :value="infos.employe.ville"></div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="NASemploye" class="form-label">NAS :</label></div>
+    <div class="col-md-8"><input type="text" class="form-control" id="NASemploye" :value="infos.employe.NASemploye"></div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4"><label for="password" class="form-label">Mot de passe :</label></div>
+    <div class="col-md-8"><input type="password" class="form-control" id="password" :value="infos.employe.password"></div>
+  </div>
+</form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary">Enregistrer</button>
+        <button type="button" class="btn btn-outline-dark m-1" @click="editEmployee">Modifier</button>
+
+      </div>
+    </div>
+  </div>
 </div>
-
-          
-      </div>
-    </div>
-        </div>
-       
-      </div>
-
-    </div>
-  
 </template>
 
 
 <script>
-export default {
-  name: 'Dashboard',
-  props: {
-    token: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      infos: {}
-    }
-  },
-  created() {
-    // Envoyer une requête GET au serveur avec le token de l'utilisateur
-    fetch('http://localhost:3000/api/mainProfileInfos', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${this.token}`
+  import axios from 'axios';
+
+  export default {
+    name: 'Dashboard',
+    props: {
+      token: {
+        type: String,
+        required: true
       }
-    })
-    .then(response => {
-      // Vérifier le code de statut de la réponse
-      if (response.status === 200) {
-        // Convertir la réponse en JSON
-        response.json().then(data => {
-          // Afficher le JSON reçu dans la console
-          console.log(data);
-          // Mettre à jour les informations de l'utilisateur
-          this.infos = data;
-        });
-      } else {
-        // Afficher un message d'erreur
-        console.error('Erreur de connexion')
-      }
-    })
-    .catch(error => {
-      console.error(error)
-    })
+    },
+    data() {
+      return {
+        infos: {},
+        chambreInfo: {},
+      };
+    },
+    created() {
+  // Envoyer une requête GET au serveur avec le token de l'utilisateur pour récupérer les informations générales
+  fetch('http://localhost:3000/mainProfileInfos', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${this.token}`
+    }
+  })
+  .then(response => {
+    // Vérifier le code de statut de la réponse
+    if (response.status === 200) {
+      // Convertir la réponse en JSON
+      response.json().then(data => {
+        // Afficher le JSON reçu dans la console
+        console.log(data);
+        // Mettre à jour les informations de l'utilisateur
+        this.infos = data;
+      });
+    } else {
+      // Afficher un message d'erreur
+      console.error('Erreur de connexion')
+    }
+  })
+  .catch(error => {
+    console.error(error)
+  });
+
+  // Envoyer une requête GET au serveur avec le token de l'utilisateur pour récupérer les informations sur les chambres
+  fetch('http://localhost:3000/chambreinfos', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${this.token}`
+    }
+  })
+  .then(response => {
+    // Vérifier le code de statut de la réponse
+    if (response.status === 200) {
+      // Convertir la réponse en JSON
+      response.json().then(data => {
+        // Afficher le JSON reçu dans la console
+        console.log(data);
+        // Mettre à jour les informations sur les chambres
+        this.chambreInfo = data;
+      });
+    } else {
+      // Afficher un message d'erreur
+      console.error('Erreur de connexion')
+    }
+  })
+  .catch(error => {
+    console.error(error)
+  });
+},
+
+    methods: {
+      getCapaciteChambres() {
+        const chambres = this.chambreInfo.chambres;
+        const capacites = chambres.map(chambre => chambre.capaciteChambre);
+        const uniqueCapacites = [...new Set(capacites)];
+        return uniqueCapacites.join(', ');
+      },
+      getPrixMin() {
+        const chambres = this.chambreInfo.chambres;
+        const prixList = chambres.map(chambre => chambre.prix);
+        const prixMin = Math.min(...prixList);
+        return prixMin;
+      },
+      getPrixMax() {
+        const chambres = this.chambreInfo.chambres;
+        const prixList = chambres.map(chambre => chambre.prix);
+        const prixMax = Math.max(...prixList);
+        return prixMax;
+      },
+      getEquipements() {
+        const chambres = this.chambreInfo.chambres;
+        const equipements = chambres.map(chambre => chambre.commodites);
+        const uniqueEquipements = [...new Set(equipements)];
+        return uniqueEquipements.join(', ');
+      },
+      getVue() {
+  const chambres = this.chambreInfo.chambres;
+  const vues = chambres
+    .map(chambre => chambre.vue)
+    .filter(vue => vue && vue.trim() !== ""); // Filter out undefined, null, and empty string values
+  const uniqueVues = [...new Set(vues)];
+
+  if (uniqueVues.length === 0) {
+    return "N/A"; // Return "N/A" (or any placeholder) if there are no valid views available
   }
-}
+
+  return uniqueVues.join(', ');
+},
+
+      getDisponibilite() {
+        const chambres = this.chambreInfo.chambres;
+        const nbDisponibles = chambres.filter(chambre => chambre.disponible === 1).length;
+        const total = chambres.length;
+        return `${nbDisponibles} chambres / ${total}`;
+      },
+      getChambreLaPlusChere() {
+        const chambres = this.chambreInfo.chambres;
+        const chambreLaPlusChere = chambres.reduce((prev, current) => {
+          return (prev.prix > current.prix) ? prev : current
+        });
+        return chambreLaPlusChere;
+      },
+      editEmployee() {
+        console.log('HAHAAA')
+    // code to edit employee information
+  }
+    },
+  };
 </script>
+
+
 
 <style scoped>
 .sidebar {

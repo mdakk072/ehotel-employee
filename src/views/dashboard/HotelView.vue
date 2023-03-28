@@ -9,6 +9,9 @@
           <li class="list-group-item"><strong>Nombre de chambres :</strong> {{ hotelInfos.hotel.nombrechambres }}</li>
         </ul>
       </div>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouterChambreModal">
+  Ajouter une chambre
+</button>
     </div>
     <div class="row justify-content-center align-items-center g-2">
       <div class="col-md-4 input-group mb-3">
@@ -86,7 +89,11 @@
 </div>
 
         <div>
-    <table class="table">
+          <div class="overflow-y-auto" :style="{ height: 80 + 'vh' }">
+
+
+
+          <table class="table">
       <thead>
         <tr>
           <th>ID</th>
@@ -110,33 +117,318 @@
         </tr>
       </tbody>
     </table>
+  </div>
 
     <div class="modal fade" tabindex="-1" role="dialog" v-bind:class="{ 'show': selectedChambre, 'd-block': selectedChambre }">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ selectedChambre ? selectedChambre.idChambre : '' }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="hideDetails"></button>
-          </div>
-          <div class="modal-body">
-            <p>Prix: {{ selectedChambre ? selectedChambre.prix : '' }}</p>
-            <p>Capacité: {{ selectedChambre ? selectedChambre.capaciteChambre : '' }}</p>
-            <p>Disponibilité: {{ selectedChambre ? (selectedChambre.disponible ? 'Disponible' : 'Indisponible') : '' }}</p>
-            <p>Vue: {{ selectedChambre ? selectedChambre.vue : '' }}</p>
-            <p>Etendue: {{ selectedChambre ? selectedChambre.etendue : '' }}</p>
-            <p>Problème: {{ selectedChambre ? (selectedChambre.problemechambre ? 'Oui' : 'Non') : '' }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="hideDetails">Fermer</button>
-          </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chambre {{ selectedChambre ? selectedChambre.idChambre : '' }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="hideDetails"></button>
+      </div>
+      <div class="modal-body" v-if="selectedChambre">
+        <form>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="prix" class="form-label">Prix</label>
+        <input type="number" class="form-control" id="prix" v-model="selectedChambre.prix">
+      </div>
+      <div class="mb-3">
+        <label for="capaciteChambre" class="form-label">Capacité</label>
+        <input type="number" class="form-control" id="capaciteChambre" v-model="selectedChambre.capaciteChambre">
+      </div>
+      <div class="mb-3">
+        <label for="disponibilite" class="form-label">Disponibilité</label>
+        <select class="form-select" id="disponibilite" v-model="selectedChambre.disponible">
+        <option value="1">Disponible</option>
+        <option value="0">Indisponible</option>
+        </select>
+
       </div>
     </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="vue" class="form-label" >Vue</label>
+        <select class="form-select" id="vue" v-model="selectedChambre.vue">
+          <option value="Vue sur la ville">Vue sur la ville</option>
+          <option value="Vue sur la mer">Vue sur la mer</option>
+          <option value="Vue sur le jardin">Vue sur le jardin</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="etendue" class="form-label">Etendue</label>
+        <select class="form-select" id="etendue" v-model="selectedChambre.etendue">
+          <option value="Petite">Petite</option>
+          <option value="Moyenne">Moyenne</option>
+          <option value="Grande">Grande</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="probleme" class="form-label">Problème</label>
+        <textarea class="form-control" id="probleme" placeholder="Aucun problème" v-model="selectedChambre.probleme"></textarea>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="mb-3">
+  <label for="commodites" class="form-label">Commodités</label>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody  v-if="selectedChambre.commodites">
+  <tr v-for="(commodite, index) in selectedChambre.commodites" :key="index">
+    <td><input type="text" class="form-control" v-model="selectedChambre.commodites[index]"></td>
+    <td>
+      <button type="button" class="btn btn-danger btn-sm float-end" v-on:click="removeCommodite(commodite)">Supprimer</button>
+    </td>
+  </tr>
+</tbody>
+
+  </table>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" id="commodites" placeholder="Ajouter une commodité" v-model="newCommodite">
+  <button type="button" class="btn btn-primary" v-on:click="addCommodite" :disabled="newCommodite === ''">Ajouter</button>
+</div>
+
+
+
+</div>
+
+
+
+
+      </div>
+      <div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="hideDetails">Annuler</button>
+  <button type="button" class="btn btn-primary" v-on:click="updateChambre" v-if="selectedChambre">Modifier chambre</button>
+  <button type="button" class="btn btn-danger" v-on:click="deleteChambre" v-if="selectedChambre">Supprimer chambre</button>
+</div>
+
+    </div>
+  </div>
+</div>
+
+
   </div>
       </div>
     </div>
    
   </div>
+
+  <!-- Ajouter chambre modale -->
+<div class="modal fade" id="ajouterChambreModal" tabindex="-1" aria-labelledby="ajouterChambreModalLabel" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ajouterChambreModalLabel">Ajouter une chambre</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="prix" class="form-label">Prix</label>
+      <input type="number" class="form-control" id="prix" v-model="newChambre.prix">
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="capaciteChambre" class="form-label">Capacité</label>
+      <input type="number" class="form-control" id="capaciteChambre" v-model="newChambre.capaciteChambre">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="disponibilite" class="form-label">Disponibilité</label>
+      <select class="form-select" id="disponibilite" v-model="newChambre.disponibilite">
+        <option value="true">Disponible</option>
+        <option value="false">Indisponible</option>
+      </select>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="vue" class="form-label">Vue</label>
+      <select class="form-select" id="vue" v-model="newChambre.vue">
+        <option value="Vue sur la ville">Vue sur la ville</option>
+        <option value="Vue sur la mer">Vue sur la mer</option>
+        <option value="Vue sur le jardin">Vue sur le jardin</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="etendue" class="form-label">Etendue</label>
+      <select class="form-select" id="etendue" v-model="newChambre.etendue">
+        <option value="Petite">Petite</option>
+        <option value="Moyenne">Moyenne</option>
+        <option value="Grande">Grande</option>
+      </select>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="probleme" class="form-label">Problème</label>
+      <input type="text" class="form-control" id="probleme" placeholder="Aucun problème" v-model="newChambre.probleme">
+    </div>
+  </div>
+</form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" @click="ajouterChambre">Ajouter chambre</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ajout de la section employés et rôles -->
+<div class="row mt-5">
+  <div class="col-12">
+    <h2>Employés et rôles</h2>
+  </div>
+  <div class="col-12">
+    <table class="table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Rôle</th>
+      <th>Salaire de début</th>
+      <th>Rue</th>
+      <th>Code postal</th>
+      <th>Ville</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(employe, index) in employees" :key="index">
+      <td>{{ employe.name }}</td>
+      <td>
+
+        <select v-model="employe.role">
+  <option :value="employe.role" selected>{{ employe.role }}</option>
+  <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+</select>
+
+      </td>
+      <td>{{ employe.salaireDebut }}</td>
+      <td><input type="text" v-model="employe.rue" class="form-control" /></td>
+      <td><input type="text" v-model="employe.codePostal" class="form-control" /></td>
+      <td><input type="text" v-model="employe.ville" class="form-control" /></td>
+      <td>
+        <button class="btn btn-primary" @click="modifierEmploye(index)">Modifier</button>
+        <button @click="supprimerEmploye(employe.NASemploye)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouterEmployeModal">Ajouter un employé</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour ajouter un employé -->
+<div class="modal fade" ref="ajouterEmployeModal" id="ajouterEmployeModal" tabindex="-1" aria-labelledby="ajouterEmployeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ajouterEmployeModalLabel">Ajouter un employé</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form @submit.prevent="ajouterEmploye">
+        <div class="modal-body">
+          <div class="row mb-3">
+            <label for="NASemploye" class="col-sm-4 col-form-label">NAS employé:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="NASemploye" v-model="employe.NASemploye">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="prenom" class="col-sm-4 col-form-label">Prénom:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="prenom" v-model="employe.prenom">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="nomFamille" class="col-sm-4 col-form-label">Nom de famille:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="nomFamille" v-model="employe.nomFamille">
+            </div>
+         
+
+          </div>
+          <div class="row mb-3">
+  <label for="username" class="col-sm-4 col-form-label">Nom d'utilisateur:</label>
+  <div class="col-sm-8">
+    <input type="text" class="form-control" id="username" v-model="employe.username">
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="password" class="col-sm-4 col-form-label">Mot de passe:</label>
+  <div class="col-sm-8">
+    <input type="password" class="form-control" id="password" v-model="employe.password">
+  </div>
+</div>
+          <div class="row mb-3">
+            <label for="rue" class="col-sm-4 col-form-label">Rue:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="rue" v-model="employe.rue">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="codePostal" class="col-sm-4 col-form-label">Code postal:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="codePostal" v-model="employe.codePostal">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="ville" class="col-sm-4 col-form-label">Ville:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="ville" v-model="employe.ville">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="idhotel" class="col-sm-4 col-form-label">ID hôtel:</label>
+
+            <div class="col-sm-8">
+              <input type="number" class="form-control" id="idhotel" v-model="employe.idhotel" >
+
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="nomRole" class="col-sm-4 col-form-label">Nom du rôle:</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="nomRole" v-model="employe.nomRole">
+<option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+</select>
+</div>
+</div>
+<div class="row mb-3">
+<label for="salaireDebut" class="col-sm-4 col-form-label">Salaire de début:</label>
+<div class="col-sm-8">
+<input type="number" class="form-control" id="salaireDebut" v-model="employe.salaireDebut">
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+<button type="submit" class="btn btn-primary" @click="addEmployee">Ajouter l'employé</button>
+</div>
+</form>
+</div>
+
+  </div>
+</div>
+
+
+
 </template>
 
 <script>
@@ -144,6 +436,28 @@ export default {
   name: 'EmployeeDashboard',
   data() {
     return {
+      employe: {
+      NASemploye: '',
+      prenom: '',
+      nomFamille: '',
+      rue: '',
+      codePostal: '',
+      ville: '',
+      username: '',
+      password: '',
+      idhotel: null,
+      nomRole: '',
+      salaireDebut: null
+    },
+
+      newChambre: {
+      prix: null,
+      capaciteChambre: null,
+      disponibilite: true,
+      vue: 'Vue sur la ville',
+      etendue: 'Petite',
+      probleme: ''
+    },
       availabilityFilter: false,
       problemFilter: false,
       priceSort: 'asc',
@@ -153,36 +467,25 @@ export default {
       hotelInfos: {},
       selectedChambre: null,
       searchQuery: '',
+      newCommodite: '',
+      employeeQuery: '',
+    newEmployee: {
+      name: '',
+      role: '',
+     
+    },
+    employees: [], // Liste des employés
+    roles: ['Manager','Réceptionniste', 'Gérant', 'Serveur', 'Cuisinier', 'Femme de chambre'], // Liste des rôles
+  
+
 
     }
   },
   created() {
-    // Envoyer une requête GET au serveur avec le token de l'utilisateur
-    fetch('http://localhost:3000/api/hotelInfos', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${this.$root.token}`
-        }
-      })
-        .then(response => {
-          // Vérifier le code de statut de la réponse
-          if (response.status === 200) {
-            // Convertir la réponse en JSON
-            response.json().then(data => {
-              // Afficher le JSON reçu dans la console
-              console.log(data);
-              // Mettre à jour les informations de l'utilisateur
-              this.hotelInfos = data;
-            });
-          } else {
-            // Afficher un message d'erreur
-            console.error('Erreur de connexion')
-          }
-        })
-        .catch(error => {
-          console.error(error)
-        })
+    this.getData()
+
+   // this.employe.idhotel = 
+
     },
     computed: {
     filteredChambres() {
@@ -191,7 +494,7 @@ export default {
       // Search by query
       if (this.searchQuery) {
         const searchQuery = this.searchQuery.toLowerCase();
-        chambres = chambres.filter(chambre => chambre.nom.toLowerCase().includes(searchQuery) || chambre.description.toLowerCase().includes(searchQuery));
+        chambres = chambres.filter(chambre => chambre.idChambre.includes(searchQuery) || chambre.description.toLowerCase().includes(searchQuery));
       }
 
       // Filtrer par disponibilité
@@ -224,7 +527,7 @@ export default {
       if (this.viewFilter) {
         chambres = chambres.filter(chambre => chambre.vue === this.viewFilter);
       }
-
+      //  this.getData()
       // Filtrer par type
       if (this.typeFilter) {
         chambres = chambres.filter(chambre => chambre.type === this.typeFilter);
@@ -234,20 +537,352 @@ export default {
     }
   },
     methods: {
+      ajouterChambre() {
+  const { prix, capaciteChambre, disponibilite, vue, etendue, probleme } = this.newChambre;
+  const idHotel = this.hotelInfos.hotel.idhotel; // assuming idhotel is already defined in the component
+  this.hotelInfos
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      prix,
+      capaciteChambre,
+      disponible: disponibilite,
+      vue,
+      etendue,
+      problemechambre: probleme
+    })
+  };
+
+  fetch(`http://localhost:3000/hotels/${idHotel}/chambres`, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      this.getData();
+      $('#ajouterChambreModal').modal('hide');
+      return response.text();
+    })
+    .then(data => {
+      console.log(data);
+      // clear form after successful submission
+      this.newChambre.prix = null;
+      this.newChambre.capaciteChambre = null;
+      this.newChambre.disponibilite = true;
+      this.newChambre.vue = 'Vue sur la ville';
+      this.newChambre.etendue = 'Petite';
+      this.newChambre.probleme = '';
+    })
+    .catch(error => {
+      console.error('Error adding chambre:', error);
+      // handle error
+    });
+},    
+  getData() {
+// Envoyer une requête GET au serveur avec le token de l'utilisateur
+fetch('http://localhost:3000/chambreinfos', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${this.$root.token}`
+        }
+      })
+        .then(response => {
+          // Vérifier le code de statut de la réponse
+          if (response.status === 200) {
+            // Convertir la réponse en JSON
+            response.json().then(data => {
+              // Afficher le JSON reçu dans la console
+              console.log(data);
+              // Mettre à jour les informations de l'utilisateur
+              data.chambres.forEach(chambre => {
+      if (chambre.commodites) {
+        chambre.commodites = chambre.commodites.split(',');
+      }
+    });
+    this.hotelInfos = data;
+    this.employe.idhotel = this.hotelInfos.hotel.idhotel;
+            });
+          } else {
+            // Afficher un message d'erreur
+            console.error('Erreur de connexion')
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+
+
+      },    
+      updateChambre() {
+  const { prix, capaciteChambre, disponible, vue, etendue, problemechambre } = this.selectedChambre;
+  const idhotel = this.hotelInfos.hotel.idhotel; // assuming idhotel is already defined in the component
+
+  const idChambre = this.selectedChambre.idChambre;
+
+  fetch(`http://localhost:3000/hotels/${idhotel}/chambres/${idChambre}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      prix: prix,
+      capaciteChambre: capaciteChambre,
+      disponible: disponible,
+      vue: vue,
+      etendue: etendue,
+      problemechambre: problemechambre
+    })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Error updating chambre');
+    }
+    return response.text();
+  })
+  .then(data => {
+    console.log(data);
+    this.getData
+    this.hideDetails();
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+},
     showDetails(chambre) {
       this.selectedChambre = chambre;
       console.log(chambre)
-    }, hideDetails() {
+    }, 
+    
+    hideDetails() {
       this.selectedChambre = null;
     },
+    deleteChambre() {
+  if (1) {
+  const idHotel = this.hotelInfos.hotel.idhotel; // assuming idhotel is already defined in the component
 
+    fetch(`http://localhost:3000/hotels/${idHotel}/chambres/${this.selectedChambre.idChambre}`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Chambre non trouvée');
+      }
+      this.selectedChambre = null;
+      this.getData();
+    })
+    .catch(error => {
+      console.error('Error deleting chambre:', error);
+      alert('Une erreur est survenue lors de la suppression de la chambre.');
+    });
+  }
+},
 
+addCommodite() {
+  if (this.newCommodite.trim() === '') {
+    return; // ne rien faire si la commodité est vide
+  }
+
+  const jsonData = { nomCommodite: this.newCommodite };
+
+  fetch(`http://localhost:3000/chambres/${this.selectedChambre.idChambre}/commodites`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(jsonData)
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error adding commodite');
+      }
+      return response.text();
+    })
+    .then((data) => {
+      console.log(data);
+      if (!this.selectedChambre.commodites) {
+        this.selectedChambre.commodites = [this.newCommodite];
+      } else {
+        this.selectedChambre.commodites.push(this.newCommodite); // ajouter la nouvelle commodité à la liste
+      }
+      this.newCommodite = ''; // réinitialiser le champ d'entrée de texte
+      this.getData();
+    })
+    .catch((error) => {
+      console.error('Error adding commodite:', error);
+    });
+}
+,removeCommodite(commodite) {
+  const idHotel = this.hotelInfos.hotel.idhotel;
+
+  fetch(`http://localhost:3000/commodite`, {
+    method: 'DELETE',
+    body: JSON.stringify({ idHotel, idChambre: this.selectedChambre.idChambre, nomCommodite: commodite }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error deleting commodite');
+      }
+      return response.text();
+    })
+    .then((data) => {
+      console.log(data);
+      if (this.selectedChambre.commodites) {
+        this.selectedChambre.commodites = this.selectedChambre.commodites.filter((item) => item !== commodite); // supprimer la commodité de la liste
+      }
+      console.log(this.selectedChambre.commodites)
+      this.getData();
+    })
+    .catch((error) => {
+      console.error('Error deleting commodite:', error);
+    });
+},//prblm
+addEmployee() {
+
+  const { NASemploye, prenom, nomFamille, rue, codePostal, ville, username, password, idhotel, nomRole, salaireDebut } = this.employe;
+  console.log ( this.employe ) ;
+  
+  fetch('http://localhost:3000/employees', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ NASemploye, prenom, nomFamille, rue, codePostal, ville, username, password, idhotel, nomRole, salaireDebut })
+  })
+    .then(response => {
+      console.log(response);
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Error adding employee');
+      }
+    })
+    .then(data => {
+      console.log(data);
+      // Vider le formulaire et actualiser la liste des employés
+      this.employe = {
+        NASemploye: '',
+        prenom: '',
+        nomFamille: '',
+        rue: '',
+        codePostal: '',
+        ville: '',
+        username: '',
+        password: '',
+        idhotel: '',
+        nomRole: '',
+        salaireDebut: ''
+      };
+      this.fetchEmployees();
+      // Fermer la modale
+      this.$refs.ajouterEmployeModal.hide();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
+,
+  removeEmployee(index) {
+    this.employees.splice(index, 1);
   },
+  // Pour récupérer les informations des employés à partir de la fonction getEmployeeInfos()
+  async fetchEmployees() {
+  try {
+    // Remplacez 'http://localhost:3000' par l'URL de votre API si elle est différente
+    const response = await fetch('http://localhost:3000/employeinfos', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${this.$root.token}`, // Utilisez le token de l'utilisateur pour l'autorisation
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const employes = await response.json();
+    console.log(employes)
+    this.employees = employes.map(employe => ({
+      NASemploye: employe.NASemploye,
+      prenom:employe.prenom,
+      nomFamille:employe.nomFamille,
+      name: `${employe.prenom} ${employe.nomFamille}`,
+      rue: employe.rue,
+      codePostal: employe.codePostal,
+      ville: employe.ville,
+      role: employe.role,
+      salaireDebut: employe.salaireDebut,
+    }));
+  } catch (error) {
+    console.error('Error fetching employees:', error);
+    // Gérer l'erreur comme vous le souhaitez, par exemple en affichant un message d'erreur à l'utilisateur
+  }
+}, modifierEmploye(index) {
+  const NASemploye = this.employees[index].NASemploye;
+  console.log(this.employees[index])
+  const { prenom, nomFamille, rue, codePostal, role, ville, salaireDebut } = this.employees[index];
+  const nomRole =  role;
+  const idhotel = this.hotelInfos.hotel.idhotel
+  console.log(prenom, nomFamille, rue, codePostal, ville, idhotel, nomRole, salaireDebut)
+  fetch(`http://localhost:3000/employees/${NASemploye}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prenom, nomFamille, rue, codePostal, ville, idhotel, nomRole, salaireDebut })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log(response.data);
+      // Update the employees array in the component with the updated employee data
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+,async supprimerEmploye(NASemploye) {
+      try {
+        const response = await fetch(`http://localhost:3000/employees/${NASemploye}`, {
+          method: 'DELETE',
+        });
+
+        if (response.status === 200) {
+          // Suppression réussie, effectuez des actions supplémentaires si nécessaire
+          // par exemple: rafraîchir la liste des employés
+          console.log('Employee and role deleted successfully');
+        } else {
+          // Gérer l'erreur de suppression
+          console.error('Error deleting employee and role');
+        }
+      } catch (error) {
+        // Gérer l'erreur de requête
+        console.error('Error deleting employee and role:', error);
+      }
+    },
+
+  
+
+
+
+
+  },mounted() {
+  this.fetchEmployees(); // Appeler la fonction fetchEmployees() lorsque le composant est monté
+},
   }
 </script>
 
 <style scoped>
-  /* Ajoutez ici vos styles personnalisés pour le tableau de bord de l'employé */
+
+
+
+
+
   .table-light td {
     background-color: #e7f5ff;
   }
@@ -278,12 +913,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-.list-group-item {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  margin-bottom: 5px;
-  padding: 10px;
-}
+
 
 .table {
   background-color: #fff;
@@ -315,18 +945,9 @@ h2 {
   margin-bottom: 5px;
 }
 
-.modal-footer button {
-  background-color: #6c757d;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-}
 
-.modal-footer button:hover {
-  cursor: pointer;
-  background-color: #5a6268;
-}
+
+
 
 
 </style>

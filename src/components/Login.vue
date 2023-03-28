@@ -107,15 +107,10 @@ export default {
         }
   },
   mounted() {
-  fetch('http://localhost:3000/chaines-hotellieres')
-    .then(response => response.json())
-    .then(data => {
-      this.chainehotelieres = data;
+  
+      //this.chainehotelieres = data;
       //console.log(this.chainehotelieres)
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  
 }
 
   ,
@@ -128,7 +123,7 @@ export default {
   }
 
   // Envoyer une requête POST à localhost:3000/login
-  fetch('http://localhost:3000/api/login', {
+  fetch('http://localhost:3000/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
