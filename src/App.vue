@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :is-connected="isConnected" @deconnexion="deconnexion"/>
+    <Navbar :is-client="isClient" :is-connected="isConnected" @deconnexion="deconnexion"/>
     <router-view/>
     <Footer/>
   </div>
@@ -19,12 +19,14 @@ export default {
   data() {
     return {
       isConnected: false,
+      isClient: false,
       token:null,
     }
   },
   methods: {
     deconnexion() {
       this.isConnected = false;
+      this.isClient = false;
       this.token=null,
       this.$router.push('/');
       

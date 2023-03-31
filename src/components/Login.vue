@@ -3,9 +3,9 @@
     <form class="form-signin" @submit.prevent="submitForm">
       <h1 class="h1 mb-5 font-weight-normal text-center">eHotel</h1>
 
-      <h1 class="h4 mb-3 font-weight-normal text-center">Connexion</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="text" id="inputEmail" style="background: rgba(255,255,255,0.1);" class="form-control mb-3" placeholder="Adresse e-mail" required autofocus v-model="email">
+      <h1 class="h4 mb-3 font-weight-normal text-center">Connexion Employee</h1>
+      <label for="inputEmail" class="sr-only">Username</label>
+      <input type="text" id="inputEmail" style="background: rgba(255,255,255,0.1);" class="form-control mb-3" placeholder="Username" required autofocus v-model="email">
 
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" style="background: rgba(255,255,255,0.1);" class="form-control mb-3" placeholder="Mot de passe" required v-model="password">

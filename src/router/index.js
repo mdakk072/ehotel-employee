@@ -3,6 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import Loginpage from '../views/Loginpage.vue'
 import dashboard from '../views/dashboard/dashboard.vue'
 import Page1 from '../components/Page1.vue'
+import LoginClientpage from '../views/client/LoginClientPage.vue'
+import BookRoomView from '../views/client/BookRoomView.vue'
+import ChambresClientView from '../views/client/ChambresClientView.vue'
 
 const routes = [
   {
@@ -95,6 +98,23 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ClientView.vue')
+  },{
+
+    path: '/loginClient',
+    name: 'Login Client Page',
+    component: LoginClientpage
+  },{
+
+    path: '/bookRoom/:token',
+    name: 'Book Room Page',
+    props: true ,
+    component: BookRoomView
+  },{
+
+  path: '/chambresClient/:token/:idhotel',
+  name: 'Chambres Client Page',
+  props: true ,
+  component: ChambresClientView
   },
   
   

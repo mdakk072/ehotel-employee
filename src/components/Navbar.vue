@@ -19,29 +19,40 @@
           <li class="nav-item">
             <router-link to="/about" class="nav-link">About</router-link>
           </li>
-          <li class="nav-item" v-if="isConnected">
+          <li class="nav-item" v-if="isConnected && !isClient">
             <router-link :to="'/dashboard/' + $root.token" class="nav-link">Dashboard</router-link>
           </li>
-          <li class="nav-item" v-if="isConnected">
+          <li class="nav-item" v-if="isConnected && !isClient">
             <router-link :to="'/dashboard/chaine/' + $root.token" class="nav-link">Chaine</router-link>
           </li>
-          <li class="nav-item" v-if="isConnected">
+          <li class="nav-item" v-if="isConnected && !isClient">
             <router-link :to="'/dashboard/hotel/' + $root.token" class="nav-link">Hotel</router-link>
           </li>
          
-          <li class="nav-item" v-if="isConnected">
+          <li class="nav-item" v-if="isConnected && !isClient">
             <router-link :to="'/dashboard/clients/' + $root.token" class="nav-link">Clients</router-link>
           </li>
-          <li class="nav-item" v-if="isConnected">
+          <li class="nav-item" v-if="isConnected && !isClient">
             <router-link :to="'/dashboard/reservation/' + $root.token" class="nav-link">Réservation</router-link>
           </li>
-          <li class="nav-item" v-if="isConnected">
+          <li class="nav-item" v-if="isConnected && !isClient">
             <router-link :to="'/dashboard/location/' + $root.token" class="nav-link">Location</router-link>
           </li>
           
           <li class="nav-item" v-if="!isConnected">
-            <router-link to="/login" class="nav-link">Login</router-link>
+            <router-link to="/login" class="nav-link">Login Employee</router-link>
           </li>
+          <li class="nav-item" v-if="!isConnected">
+            <router-link to="/loginClient" class="nav-link">Login Client</router-link>
+          </li>
+
+          <li class="nav-item" v-if="isClient">
+            <router-link :to="'/bookRoom/' + $root.token" class="nav-link">Book a room</router-link>
+          </li>
+          <li class="nav-item" v-if="isClient">
+            <router-link :to="'/myReservations/' + $root.token" class="nav-link">My reservations</router-link>
+          </li>
+
         </ul>
         <div v-if="isConnected" class="d-flex">
           <a class="btn btn-outline-danger m-2" @click="$emit('deconnexion')">Déconnexion</a>
@@ -57,7 +68,8 @@
 export default {
   name: 'Navbar',
   props: {
-    isConnected: Boolean
+    isConnected: Boolean,
+    isClient: Boolean
   },
   mounted() {
   const currentLink = window.location.pathname;
