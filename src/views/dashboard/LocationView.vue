@@ -2,28 +2,50 @@
     <div class="container-fluid">
       <h1 class="my-4 text-body-secondary">Locations</h1>
       <div class="row mb-4">
-      <div class="col">
-        <input class="form-control" type="text" placeholder="Chambre" v-model="newLocation.idChambre" />
-      </div>
-      <div class="col">
-        <input class="form-control" type="text" placeholder="Client" v-model="newLocation.client" />
-      </div>
-      <div class="col">
-        <input class="form-control" type="text" placeholder="Employé" v-model="newLocation.employe" />
-      </div>
-      <div class="col">
-        <input class="form-control" type="text" placeholder="Check-in" v-model="newLocation.checkInDate" />
-      </div>
-      <div class="col">
-        <input class="form-control" type="text" placeholder="Check-out" v-model="newLocation.checkOutDate" />
-      </div>
-      <div class="col">
-        <input class="form-control" type="text" placeholder="Paiement" v-model="newLocation.paiement" />
-      </div>
-      <div class="col">
-        <button class="btn btn-success float-end" @click="addLocation">Ajouter</button>
-      </div>
+    <div class="col">
+      <select class="form-select" v-model="newLocation.idChambre">
+        <option disabled value="">Sélectionnez une chambre</option>
+        <option v-for="chambre in chambresDisponibles" :key="chambre.idChambre" :value="chambre.idChambre">
+          {{ chambre.idChambre }}
+        </option>
+      </select>
     </div>
+    <div class="col">
+      <input class="form-control" type="text" placeholder="Client" v-model="newLocation.client" />
+    </div>
+    <div class="col">
+      <select class="form-select" v-model="newLocation.employe">
+        <option disabled value="">Sélectionnez un employé</option>
+        <option v-for="employe in employes" :key="employe.NASemploye" :value="employe.NASemploye">
+          {{ employe.prenom }} {{ employe.nomFamille }} ({{ employe.NASemploye }})
+        </option>
+      </select>
+    </div>
+    <div class="col">
+      <input class="form-control" type="date" placeholder="Check-in" v-model="newLocation.checkInDate" />
+    </div>
+    <div class="col">
+      <input class="form-control" type="date" placeholder="Check-out" v-model="newLocation.checkOutDate" />
+    </div>
+    <div class="col">
+  <select class="form-select" v-model="newLocation.paiement">
+    <option value="">Sélectionner un mode de paiement</option>
+    <option value="Virement bancaire">Virement bancaire</option>
+    <option value="Prélèvement automatique">Prélèvement automatique</option>
+    <option value="Cartes prépayées">Cartes prépayées</option>
+    <option value="Paiements par portefeuille électronique (ex: PayPal, Google Pay)">Paiements par portefeuille électronique (ex: PayPal, Google Pay)</option>
+    <option value="Chèques bancaires certifiés">Chèques bancaires certifiés</option>
+    <option value="Paiements en crypto-monnaie (ex: Bitcoin, Ethereum)">Paiements en crypto-monnaie (ex: Bitcoin, Ethereum)</option>
+    <option value="Paiement en espèces">Paiement en espèces</option>
+    <option value="Carte de crédit">Carte de crédit</option>
+    <option value="Carte de débit">Carte de débit</option>
+    <option value="Non payé">Non payé</option>
+  </select>
+</div>
+    <div class="col">
+      <button class="btn btn-success float-end" @click="addLocation">Ajouter</button>
+    </div>
+  </div>
       <table class="table table-striped table-hover">
         <thead>
           <tr>
@@ -38,16 +60,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="location in locations" :key="location.idLocation">
+          <tr v-for="location in locations.locations" :key="location.idLocation">
             <td>{{ location.idLocation }}</td>
             <td>{{ location.idChambre }}</td>
-            <td>{{ location.clientPrenom }} {{ location.clientNomFamille }}</td>
-            <td>{{ location.employePrenom }} {{ location.employeNomFamille }}</td>
-            <td>{{ location.checkIndDate }}</td>
-            <td>{{ location.checkOutDate }}</td>
+            <td>{{ location.NASclient }}</td>
+            <td>{{ location.NASemploye }}</td>
+            <td>{{ new Date(location.checkIndDate).toISOString().split('T')[0] }}</td>
+<td>{{ new Date(location.checkOutDate).toISOString().split('T')[0] }}</td>
             <td>{{ location.paiement }}</td>
             <td>
-
               <button class="btn btn-outline-primary btn-sm" @click="showEditModal(location)">Edit</button>
               <button class="btn btn-outline-danger btn-sm" @click="deleteLocation(location.idLocation)">Delete</button>
             </td>
@@ -55,8 +76,6 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -66,40 +85,64 @@
       </div>
       <div class="modal-body">
         <form @submit.prevent="submitEditForm">
-          <div class="mb-3">
-            <label for="idChambre" class="form-label">Chambre</label>
-            <input type="text" class="form-control" id="idChambre" v-model="selectedReservation.idChambre" required>
-          </div>
-          <div class="mb-3">
-            <label for="clientName" class="form-label">Client</label>
-            <input type="text" class="form-control" id="clientName" :value="selectedReservation.clientPrenom + ' ' + selectedReservation.clientNomFamille" readonly>
-          </div>
-          <div class="mb-3">
-            <label for="employeeName" class="form-label">Employé</label>
-            <input type="text" class="form-control" id="employeeName" :value="selectedReservation.employePrenom + ' ' + selectedReservation.employeNomFamille" readonly>
-          </div>
-          <div class="mb-3">
-            <label for="checkInDate" class="form-label">Check-in</label>
-            <input type="date" class="form-control" id="checkInDate" v-model="selectedReservation.checkIndDate" required>
-          </div>
-          <div class="mb-3">
-            <label for="checkOutDate" class="form-label">Check-out</label>
-            <input type="date" class="form-control" id="checkOutDate" v-model="selectedReservation.checkOutDate" required>
-          </div>
-          <div class="mb-3">
-            <label for="paiement" class="form-label">Paiement</label>
-            <input type="text" class="form-control" id="paiement" v-model="selectedReservation.paiement" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-        </form>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="idChambre" class="form-label">Chambre</label>
+        <select class="form-select" id="idChambre" v-model="selectedReservation.idChambre">
+          <option disabled value="">Sélectionnez une chambre</option>
+          <option v-for="chambre in chambresDisponibles" :key="chambre.idChambre" :value="chambre.idChambre">
+            {{ chambre.idChambre }}
+          </option>
+        </select>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+      <div class="mb-3">
+        <label for="checkInDate" class="form-label">Check-in</label>
+        <input type="date" class="form-control" id="checkInDate" v-model="selectedReservation.checkIndDate" required>
+      </div>
+      <div class="mb-3">
+        <label for="paiement" class="form-label">Paiement</label>
+        <select class="form-select" id="paiement" v-model="selectedReservation.paiement">
+          <option value="">Sélectionner un mode de paiement</option>
+          <option value="Virement bancaire">Virement bancaire</option>
+          <option value="Prélèvement automatique">Prélèvement automatique</option>
+          <option value="Cartes prépayées">Cartes prépayées</option>
+          <option value="Paiements par portefeuille électronique (ex: PayPal, Google Pay)">Paiements par portefeuille électronique (ex: PayPal, Google Pay)</option>
+          <option value="Chèques de voyage">Chèques de voyage</option>
+          <option value="Espèces">Espèces</option>
+          <option value="Chèques bancaires certifiés">Chèques bancaires certifiés</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="clientName" class="form-label">Client</label>
+        <input type="text" class="form-control" id="clientName" :value="selectedReservation.NASclient" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="employeeName" class="form-label">Employé</label>
+        <select class="form-select" id="employeeName" v-model="selectedReservation.NASemploye">
+          <option disabled value="">Sélectionnez un employé</option>
+          <option v-for="employe in employes" :key="employe.NASemploye" :value="employe.NASemploye">
+            {{ employe.prenom }} {{ employe.nomFamille }} ({{ employe.NASemploye }})
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="checkOutDate" class="form-label">Check-out</label>
+        <input type="date" class="form-control" id="checkOutDate" v-model="selectedReservation.checkOutDate" required>
       </div>
     </div>
   </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+  </div>
+</form>
 </div>
-
+</div>
+  </div>
+</div>
   </template>
   
   <script>
@@ -115,6 +158,7 @@
         checkInDate: "",
         checkOutDate: "",
         paiement: "",
+        
       },
 
       };
@@ -123,24 +167,71 @@
       this.fetchLocations();
     },
     methods: {
-      async fetchLocations() {
-        try {
-          const response = await fetch("http://localhost:3000/locations", {
-            headers: {
-              authorization: this.$root.token,
-            },
-          });
-          if (!response.ok) {
-            throw new Error("Error fetching locations");
-          }
-          this.locations = await response.json();
-        } catch (err) {
-          console.error(err);
-        }
+      fetchLocations() {
+  fetch("http://localhost:3000/locationinfos", {
+    headers: {
+      authorization: this.$root.token,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error fetching locations");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      this.locations = data;
+      console.log(this.locations);
+
+      this.chambresDisponibles = data.chambres;
+      this.employes = data.employes;
+
+      console.log("ypppppp");
+      console.log("ypppppp");
+      console.log("ypppppp");
+      console.log("ypppppp");
+      console.log("ypppppp");
+      console.log("ypppppp");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
       },
-      editLocation(idLocation) {
-        this.$router.push({ name: "EditLocation", params: { idLocation } });
-      },
+      submitEditForm() {
+  // Vérifier si toutes les données nécessaires sont fournies
+  if (!this.selectedReservation.idChambre || !this.selectedReservation.NASclient || !this.selectedReservation.NASemploye || !this.selectedReservation.checkIndDate || !this.selectedReservation.checkOutDate || !this.selectedReservation.paiement) {
+    alert("Veuillez remplir tous les champs avant de continuer.");
+    return;
+  }
+
+  // Envoyer une requête PUT pour modifier la location sélectionnée
+  fetch(`http://localhost:3000/locations/${this.selectedReservation.idLocation}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      idChambre: this.selectedReservation.idChambre,
+      NASclient: this.selectedReservation.NASclient,
+      NASemploye: this.selectedReservation.NASemploye,
+      checkIndDate: this.selectedReservation.checkIndDate,
+      checkOutDate: this.selectedReservation.checkOutDate,
+      paiement: this.selectedReservation.paiement,
+    }),
+  })
+    .then((data) => {
+      console.log(data)
+      this.fetchLocations();
+      this.selectedReservation = {};
+      $('#editModal').modal('hide');
+
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Une erreur s'est produite lors de la modification de la location.");
+    });
+},
+     
       deleteLocation(idLocation) {
         if (!confirm("Are you sure you want to delete this location?")) {
           return;
@@ -162,13 +253,50 @@
           });
       },
       addLocation() {
-        this.$router.push({ name: "AddLocation" });
-      },
-      showEditModal(location) {
-      this.selectedReservation = Object.assign({}, location);
-      const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-      editModal.show();
+  // Vérifier si toutes les données nécessaires sont fournies
+  if (!this.newLocation.idChambre || !this.newLocation.client || !this.newLocation.employe || !this.newLocation.checkInDate || !this.newLocation.checkOutDate || !this.newLocation.paiement) {
+    alert("Veuillez remplir tous les champs avant de continuer.");
+    return;
+  }
+
+  // Envoyer une requête POST pour ajouter la nouvelle location
+  fetch("http://localhost:3000/locations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      idChambre: this.newLocation.idChambre,
+      NASclient: this.newLocation.client,
+      NASemploye: this.newLocation.employe,
+      checkInDate: this.newLocation.checkInDate,
+      checkOutDate: this.newLocation.checkOutDate,
+      paiement: this.newLocation.paiement,
+    }),
+  })
+    .then((data) => {
+      this.fetchLocations();
+      this.newLocation = {
+        idChambre: "",
+        client: "",
+        employe: "",
+        checkInDate: "",
+        checkOutDate: "",
+        paiement: "",
+      };
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Une erreur s'est produite lors de l'ajout de la nouvelle location.");
+    });
+},
+showEditModal(location) {
+  this.selectedReservation = Object.assign({}, location);
+  this.selectedReservation.checkIndDate = new Date(location.checkIndDate).toISOString().split('T')[0];
+  this.selectedReservation.checkOutDate = new Date(location.checkOutDate).toISOString().split('T')[0];
+  const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+  editModal.show();
+},
     },
   };
   </script>
@@ -181,63 +309,66 @@
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+  .container-fluid {
+    background-image: url('https://images.unsplash.com/photo-1533158326339-7f3cf2404354?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=768&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
   
   h1.text-body-secondary {
-    color: #2c3e50;
+    color: #1e272e;
     font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   .table {
     background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
   }
   
   .table th,
   .table td {
-    color: #2c3e50;
+    color: #1e272e;
   }
   
   .btn {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   .btn-outline-primary {
-    border-color: #3498db;
-    color: #3498db;
+    border-color: #0066cc;
+    color: #0066cc;
   }
   
   .btn-outline-primary:hover {
-    background-color: #3498db;
+    background-color: #0066cc;
     color: #fff;
   }
   
   .btn-outline-danger {
-    border-color: #e74c3c;
-    color: #e74c3c;
+    border-color: #cc0000;
+    color: #cc0000;
   }
   
   .btn-outline-danger:hover {
-    background-color: #e74c3c;
+    background-color: #cc0000;
     color: #fff;
   }
   
   .modal-content {
     background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
   }
   
   .form-label {
-    color: #2c3e50;
+    color: #1e272e;
     font-weight: 500;
-  }
-  
-  .btn-close {
-    background-image: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E);
   }
   
   .btn-close:hover {
     filter: brightness(0.8);
   }
-  </style>
-  
+</style>

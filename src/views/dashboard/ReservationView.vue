@@ -1,41 +1,96 @@
 <template>
-    <div class="container">
-      <h1 class="my-4">Réservations</h1>
-      <div class="row">
-        <div class="col-12">
-          <!-- Ici, vous pouvez ajouter des filtres de recherche pour les réservations -->
-        </div>
-        <div class="col-12">
-          <table class="table table-striped mt-4">
-            <thead>
-              <tr>
-                <th scope="col">Client</th>
-                <th scope="col">Hôtel</th>
-                <th scope="col">Chambre</th>
-                <th scope="col">Dates de réservation</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Bouclez sur la liste des réservations et affichez les informations -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "Reservations",
-    data() {
-      return {
-        // Données des réservations
-      };
+  <div class="container">
+    <h1 class="my-5">Reservations</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>idReservation</th>
+          <th>Room idReservation</th>
+          <th>Client idReservation</th>
+          <th>Check-in Date</th>
+          <th>Check-out Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="reservation in reservations" :key="reservation.idReservation">
+          <td>{{ reservation.idReservation }}</td>
+          <td>{{ reservation.idReservationChambre }}</td>
+          <td>{{ reservation.NASclient }}</td>
+          <td>{{ reservation.checkInDate }}</td>
+          <td>{{ reservation.checkOutDate }}</td>
+          <td>
+            <button class="btn btn-primary me-2" @click="editReservation(reservation)">Edit</button>
+            <button class="btn btn-danger" @click="deleteReservation(reservation.idReservation)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Reservations",
+  data() {
+    return {
+      reservations: [],
+      currentReservation: null,
+    };
+  },
+  methods: {
+    fetchReservations() {
+      fetch('http://localhost:3000/reservationInfos', {
+        headers: {
+          authorization: this.$root.token,
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.chambres = data.chambres;
+        this.employes = data.employes;
+        this.reservations = data.reservations;
+        this.loading = false;
+        console.log(data)
+      })
+      .catch(error => {
+        console.error('Error fetching reservation information:', error);
+        this.loading = false;
+      });
     },
-    methods: {
-      // Méthodes pour gérer les réservations
+    editReservation(reservation) {
+      this.currentReservation = reservation;
     },
-  };
-  </script>
-  
+    updateReservation() {
+      fetch(`http://localhost:3000/reservations/${this.currentReservation.idReservation}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.currentReservation)
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        this.fetchReservations();
+      })
+      .catch(error => console.error('Error updating reservation:', error));
+      this.currentReservation = null;
+    },
+    deleteReservation(idReservation) {
+      fetch(`http://localhost:3000/reservations/${idReservation}`, {
+        method: 'DELETE'
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        this.fetchReservations();
+      })
+      .catch(error => console.error('Error deleting reservation:', error));
+    },
+  },
+  created() {
+    this.fetchReservations();
+  },
+};
+</script>

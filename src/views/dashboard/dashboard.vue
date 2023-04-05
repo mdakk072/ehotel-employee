@@ -212,48 +212,53 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <!-- Informations sur chambres -->
-<form>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="prenom" class="form-label">Prénom :</label></div>
-    <div class="col-md-8"><input type="text" class="form-control" id="prenom" :value="infos.employe.prenom"></div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="nomFamille" class="form-label">Nom :</label></div>
-    <div class="col-md-8"><input type="text" class="form-control" id="nomFamille" :value="infos.employe.nomFamille"></div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="rue" class="form-label">Rue :</label></div>
-    <div class="col-md-8"><input type="text" class="form-control" id="rue" :value="infos.employe.rue"></div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="codePostal" class="form-label">Code postal :</label></div>
-    <div class="col-md-8"><input type="text" class="form-control" id="codePostal" :value="infos.employe.codePostal"></div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="ville" class="form-label">Ville :</label></div>
-    <div class="col-md-8"><input type="text" class="form-control" id="ville" :value="infos.employe.ville"></div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="NASemploye" class="form-label">NAS :</label></div>
-    <div class="col-md-8"><input type="text" class="form-control" id="NASemploye" :value="infos.employe.NASemploye"></div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4"><label for="password" class="form-label">Mot de passe :</label></div>
-    <div class="col-md-8"><input type="password" class="form-control" id="password" :value="infos.employe.password"></div>
-  </div>
-</form>
-
+        <form>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="prenom" class="form-label">Prénom :</label>
+              <input type="text" class="form-control" id="prenom" v-model="infos.employe.prenom">
+            </div>
+            <div class="col-6">
+              <label for="nomFamille" class="form-label">Nom :</label>
+              <input type="text" class="form-control" id="nomFamille" v-model="infos.employe.nomFamille">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="rue" class="form-label">Rue :</label>
+              <input type="text" class="form-control" id="rue" v-model="infos.employe.rue">
+            </div>
+            <div class="col-6">
+              <label for="codePostal" class="form-label">Code postal :</label>
+              <input type="text" class="form-control" id="codePostal" v-model="infos.employe.codePostal">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="ville" class="form-label">Ville :</label>
+              <input type="text" class="form-control" id="ville" v-model="infos.employe.ville">
+            </div>
+            <div class="col-6">
+              <label for="NASemploye" class="form-label">NAS :</label>
+              <input type="text" class="form-control" id="NASemploye" v-model="infos.employe.NASemploye">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="password" class="form-label">Mot de passe :</label>
+              <input type="password" class="form-control" id="password" v-model="infos.employe.password">
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary">Enregistrer</button>
-        <button type="button" class="btn btn-outline-dark m-1" @click="editEmployee">Modifier</button>
-
+        <button type="button" class="btn btn-primary" @click="editEmployee">Enregistrer</button>
       </div>
     </div>
   </div>
 </div>
+
 </template>
 
 
@@ -272,6 +277,7 @@
       return {
         infos: {},
         chambreInfo: {},
+        
       };
     },
     created() {
@@ -367,7 +373,7 @@
   }
 
   return uniqueVues.join(', ');
-},
+      },
 
       getDisponibilite() {
         const chambres = this.chambreInfo.chambres;
@@ -383,9 +389,33 @@
         return chambreLaPlusChere;
       },
       editEmployee() {
-        console.log('HAHAAA')
-    // code to edit employee information
-  }
+  const NASemploye = this.infos.employe.NASemploye;
+  const { prenom, nomFamille, rue, codePostal, ville, idhotel } = this.infos.employe;
+
+  fetch(`http://localhost:3000/employees/${NASemploye}/update-info`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${this.token}`
+    },
+    body: JSON.stringify({ prenom, nomFamille, rue, codePostal, ville, idhotel })
+  })
+  .then(response => {
+    if (response.status === 200) {
+      console.log('Employee updated successfully');
+      $('#modifyEmployeeModal').modal('hide');
+
+    } else {
+      console.error('Error updating employee');
+      throw new Error('Error updating employee');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+
     },
   };
 </script>
