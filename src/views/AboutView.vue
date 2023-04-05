@@ -35,12 +35,7 @@
       </ul>
     </section>
 
-    <section class="mt-4 text-light">
-      <h2 class="mb-3">Chaînes hôtelières partenaires</h2>
-      <ul class="list-unstyled">
-        <li v-for="hotelChain in hotelChains" :key="hotelChain" class="mb-2"><strong>{{ hotelChain }}</strong></li>
-</ul>
-</section>
+
 
   </div>
 </template>
@@ -49,13 +44,7 @@ export default {
   name: 'ReservationApp',
   data() {
     return {
-      hotelChains: [
-        'Chaîne hôtelière 1',
-        'Chaîne hôtelière 2',
-        'Chaîne hôtelière 3',
-        'Chaîne hôtelière 4',
-        'Chaîne hôtelière 5',
-      ],
+   
     };
   },
   // Les méthodes et propriétés de l'application

@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid">
-    <h1>{{ hotelInfos.hotel.nom }}</h1>
+    <h1 class="text-muted">{{ hotelInfos.hotel.nom }}</h1>
     <div class="row justify-content-center align-items-center g-2">
       <div class="col-12 col-md-4 m-2">
         <h2>Informations de l'hôtel</h2>
         <ul class="list-group m-1">
           <li class="list-group-item"><strong>Adresse :</strong> {{ hotelInfos.hotel.rue }}, {{ hotelInfos.hotel.codePostal }}, {{ hotelInfos.hotel.ville }}</li>
-          <li class="list-group-item"><strong>Nombre de chambres :</strong> {{ hotelInfos.hotel.nombrechambres }}</li>
+          <li class="list-group-item"><strong>Nombre de chambres :</strong> {{ hotelInfos.chambres.length }}</li>
         </ul>
       </div>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouterChambreModal">
@@ -29,7 +29,6 @@
     <h2>Liste des chambres</h2>
   </div>
  
-
   <div class="col-md-6 d-flex justify-content-end">
   <div class="form-check form-switch me-3">
     <input class="form-check-input" type="checkbox" id="availabilityFilter" v-model="availabilityFilter">
@@ -39,9 +38,7 @@
     <input class="form-check-input" type="checkbox" id="problemFilter" v-model="problemFilter">
     <label class="form-check-label" for="problemFilter">Avec problème</label>
   </div>
-  
 
-  
   <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="priceSortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
       Trier par prix
@@ -49,8 +46,10 @@
     <ul class="dropdown-menu" aria-labelledby="priceSortDropdown">
       <li><a class="dropdown-item" href="#" v-on:click="priceSort = 'asc'">Prix croissant</a></li>
       <li><a class="dropdown-item" href="#" v-on:click="priceSort = 'desc'">Prix décroissant</a></li>
+      <li><a class="dropdown-item" href="#" v-on:click="priceSort = ''">Annuler</a></li>
     </ul>
   </div>
+
   <!-- Filter by room capacity -->
   <div class="dropdown ms-3">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="capacityFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -60,8 +59,10 @@
       <li><a class="dropdown-item" href="#" v-on:click="capacityFilter = 1">1 personne</a></li>
       <li><a class="dropdown-item" href="#" v-on:click="capacityFilter = 2">2 personnes</a></li>
       <li><a class="dropdown-item" href="#" v-on:click="capacityFilter = 3">3 personnes ou plus</a></li>
+      <li><a class="dropdown-item" href="#" v-on:click="capacityFilter = ''">Annuler</a></li>
     </ul>
   </div>
+
   <!-- Filter by room view -->
   <div class="dropdown ms-3">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="viewFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,19 +72,21 @@
       <li><a class="dropdown-item" href="#" v-on:click="viewFilter = 'Vue sur la ville'">Vue sur la ville</a></li>
       <li><a class="dropdown-item" href="#" v-on:click="viewFilter = 'Vue sur la mer'">Vue sur la mer</a></li>
       <li><a class="dropdown-item" href="#" v-on:click="viewFilter = 'Vue sur le jardin'">Vue sur le jardin</a></li>
+      <li><a class="dropdown-item" href="#" v-on:click="viewFilter = ''">Annuler</a></li>
     </ul>
   </div>
   <!-- Filter by room type -->
   <div class="dropdown ms-3">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="typeFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-      Type de chambre
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="typeFilterDropdown">
-      <li><a class="dropdown-item" href="#" v-on:click="typeFilter = 'Standard'">Standard</a></li>
-      <li><a class="dropdown-item" href="#" v-on:click="typeFilter = 'Deluxe'">Deluxe</a></li>
-      <li><a class="dropdown-item" href="#" v-on:click="typeFilter = 'Suite'">Suite</a></li>
-    </ul>
-  </div>
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="orderByDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    Trier par
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="orderByDropdown">
+    <li><a class="dropdown-item" href="#" v-on:click="orderBy = 'prix'">Prix</a></li>
+    <li><a class="dropdown-item" href="#" v-on:click="orderBy = 'capaciteChambre'">Capacité</a></li>
+    <li><a class="dropdown-item" href="#" v-on:click="orderBy = 'vue'">Vue</a></li>
+  </ul>
+</div>
+
 </div>
   
 </div>
@@ -287,50 +290,47 @@
 <!-- Ajout de la section employés et rôles -->
 <div class="row mt-5">
   <div class="col-12">
+
     <h2>Employés et rôles</h2>
   </div>
   <div class="col-12">
-    <table class="table">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Rôle</th>
-      <th>Salaire de début</th>
-      <th>Rue</th>
-      <th>Code postal</th>
-      <th>Ville</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(employe, index) in employees" :key="index">
-      <td>{{ employe.name }}</td>
-      <td>
-
-        <select v-model="employe.role">
-  <option :value="employe.role" selected>{{ employe.role }}</option>
-  <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
-</select>
-
-      </td>
-      <td>{{ employe.salaireDebut }}</td>
-      <td><input type="text" v-model="employe.rue" class="form-control" /></td>
-      <td><input type="text" v-model="employe.codePostal" class="form-control" /></td>
-      <td><input type="text" v-model="employe.ville" class="form-control" /></td>
-      <td>
-        <button class="btn btn-primary" @click="modifierEmploye(index)">Modifier</button>
-        <button @click="supprimerEmploye(employe.NASemploye)">Supprimer</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-start m-1">
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouterEmployeModal">Ajouter un employé</button>
     </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Rôle</th>
+          <th>Salaire de début</th>
+          <th>Rue</th>
+          <th>Code postal</th>
+          <th>Ville</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(employe, index) in employees" :key="index">
+          <td>{{ employe.name }}</td>
+          <td>
+            <select class="form-select" v-model="employe.role">
+              <option :value="employe.role" selected>{{ employe.role }}</option>
+              <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+            </select>
+          </td>
+          <td>{{ employe.salaireDebut }}</td>
+          <td><input type="text" v-model="employe.rue" class="form-control" /></td>
+          <td><input type="text" v-model="employe.codePostal" class="form-control" /></td>
+          <td><input type="text" v-model="employe.ville" class="form-control" /></td>
+          <td class="row">
+            <button class="btn btn-primary" @click="modifierEmploye(index)">Modifier</button>
+            <button class="btn btn-danger" @click="supprimerEmploye(employe.NASemploye)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  
   </div>
 </div>
 
@@ -469,6 +469,7 @@ export default {
       searchQuery: '',
       newCommodite: '',
       employeeQuery: '',
+      orderBy:'',
     newEmployee: {
       name: '',
       role: '',
@@ -488,53 +489,74 @@ export default {
 
     },
     computed: {
-    filteredChambres() {
-      let chambres = this.hotelInfos.chambres;
+      filteredChambres() {
+  let chambres = this.hotelInfos.chambres;
 
-      // Search by query
-      if (this.searchQuery) {
-        const searchQuery = this.searchQuery.toLowerCase();
-        chambres = chambres.filter(chambre => chambre.idChambre.includes(searchQuery) || chambre.description.toLowerCase().includes(searchQuery));
-      }
+  // Search by query
+  if (this.searchQuery) {
+  const searchQuery = this.searchQuery.toLowerCase();
+  chambres = chambres.filter(chambre => {
+    return Object.values(chambre).some(value =>
+      Array.isArray(value)
+        ? value.some(commodite => commodite.toLowerCase().includes(searchQuery))
+        : String(value).toLowerCase().includes(searchQuery)
+    );
+  });
+}
 
-      // Filtrer par disponibilité
-      if (this.availabilityFilter) {
-        chambres = chambres.filter(chambre => chambre.disponible);
-      }
 
-      // Filtrer par problème
-      if (this.problemFilter) {
-        chambres = chambres.filter(chambre => chambre.problemechambre);
-      }
+  // Filtrer par disponibilité
+  if (this.availabilityFilter) {
+    chambres = chambres.filter(chambre => chambre.disponible);
+  }
 
-      // Trier par prix
-      if (this.priceSort === 'asc') {
-        chambres = chambres.sort((a, b) => a.prix - b.prix);
+  // Filtrer par problème
+  if (this.problemFilter) {
+    chambres = chambres.filter(chambre => chambre.problemechambre);
+  }
+
+  // Trier par prix
+  if (this.priceSort === 'asc') {
+    chambres = chambres.sort((a, b) => a.prix - b.prix);
+  } else {
+    chambres = chambres.sort((a, b) => b.prix - a.prix);
+  }
+
+  // Filtrer par capacité
+  if (this.capacityFilter) {
+    chambres = chambres.filter(chambre => {
+      if (this.capacityFilter === 1) return chambre.capaciteChambre === 1;
+      if (this.capacityFilter === 2) return chambre.capaciteChambre === 2;
+      if (this.capacityFilter === 3) return chambre.capaciteChambre >= 3;
+    });
+  }
+
+  // Filtrer par vue
+  if (this.viewFilter) {
+    chambres = chambres.filter(chambre => chambre.vue === this.viewFilter);
+  }
+
+  // Filtrer par type
+  if (this.typeFilter) {
+    chambres = chambres.filter(chambre => chambre.type === this.typeFilter);
+  }
+
+  // Trier par attribut sélectionné
+  if (this.orderBy) {
+    chambres = chambres.sort((a, b) => {
+      if (a[this.orderBy] < b[this.orderBy]) {
+        return -1;
+      } else if (a[this.orderBy] > b[this.orderBy]) {
+        return 1;
       } else {
-        chambres = chambres.sort((a, b) => b.prix - a.prix);
+        return 0;
       }
+    });
+  }
 
-      // Filtrer par capacité
-      if (this.capacityFilter) {
-        chambres = chambres.filter(chambre => {
-          if (this.capacityFilter === 1) return chambre.capaciteChambre === 1;
-          if (this.capacityFilter === 2) return chambre.capaciteChambre === 2;
-          if (this.capacityFilter === 3) return chambre.capaciteChambre >= 3;
-        });
-      }
+  return chambres;
+}
 
-      // Filtrer par vue
-      if (this.viewFilter) {
-        chambres = chambres.filter(chambre => chambre.vue === this.viewFilter);
-      }
-      //  this.getData()
-      // Filtrer par type
-      if (this.typeFilter) {
-        chambres = chambres.filter(chambre => chambre.type === this.typeFilter);
-      }
-
-      return chambres;
-    }
   },
     methods: {
       ajouterChambre() {

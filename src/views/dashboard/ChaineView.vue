@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12">
   <h2>Chaîne hôtelière : {{ hotelInfos.chaineHoteliere.nom }}</h2>
-  <p>Nombre d'hôtels : 3</p>
+  <p>Nombre d'hôtels : {{ hotelInfos.hotels.length }}</p>
   <button class="btn btn-primary" @click="selectedChaine = hotelInfos.chaineHoteliere" data-bs-toggle="modal" data-bs-target="#modifierChaineModal">Modifier</button>
 </div>
 
@@ -46,41 +46,53 @@
       </div>
       <form @submit.prevent="createBureau">
         <div class="modal-body">
-          <div class="row mb-3">
-            <label for="rue" class="col-sm-4 col-form-label">Rue:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="rue" v-model="newBureau.rue">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="codePostal" class="col-sm-4 col-form-label">Code postal:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="codePostal" v-model="newBureau.codePostal">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="ville" class="col-sm-4 col-form-label">Ville:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="ville" v-model="newBureau.ville">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="email" class="col-sm-4 col-form-label">Email:</label>
-            <div class="col-sm-8">
-              <input type="email" class="form-control" id="email" v-model="newBureau.email">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="numeroTel" class="col-sm-4 col-form-label">Numéro de téléphone:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="numeroTel" v-model="newBureau.numeroTel">
-            </div>
-          </div>
+  <form @submit.prevent="createBureau" class="row g-3 needs-validation" novalidate>
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="rue" v-model="newBureau.rue" required>
+        <label for="rue">Rue</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une rue valide.
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-          <button class="btn btn-primary">Ajouter</button>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="codePostal" v-model="newBureau.codePostal" required>
+        <label for="codePostal">Code postal</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un code postal valide.
         </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="ville" v-model="newBureau.ville" required>
+        <label for="ville">Ville</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une ville valide.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" v-model="newBureau.email" required>
+        <label for="email">Email</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une adresse email valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="numeroTel" v-model="newBureau.numeroTel" required>
+        <label for="numeroTel">Numéro de téléphone</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un numéro de téléphone valide.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      <button class="btn btn-primary">Ajouter</button>
+    </div>
+  </form>
+</div>
+
       </form>
     </div>
   </div>
@@ -96,37 +108,49 @@
       </div>
       <form @submit.prevent="updateBureau">
         <div class="modal-body" v-if="selectedBureau">
-          <div class="row mb-3">
-            <label for="rue" class="col-sm-4 col-form-label">Rue:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="rue" v-model="selectedBureau.rue">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="codePostal" class="col-sm-4 col-form-label">Code postal:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="codePostal" v-model="selectedBureau.codePostal">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="ville" class="col-sm-4 col-form-label">Ville:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="ville" v-model="selectedBureau.ville">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="email" class="col-sm-4 col-form-label">Email:</label>
-            <div class="col-sm-8">
-              <input type="email" class="form-control" id="email" v-model="selectedBureau.email">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="numeroTel" class="col-sm-4 col-form-label">Numéro de téléphone:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="numeroTel" v-model="selectedBureau.numeroTel">
-            </div>
-          </div>
+  <form class="row g-3 needs-validation" novalidate>
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="rue" v-model="selectedBureau.rue" required>
+        <label for="rue">Rue</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une rue valide.
         </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="codePostal" v-model="selectedBureau.codePostal" required>
+        <label for="codePostal">Code postal</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un code postal valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="ville" v-model="selectedBureau.ville" required>
+        <label for="ville">Ville</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une ville valide.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" v-model="selectedBureau.email" required>
+        <label for="email">Email</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une adresse email valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="numeroTel" v-model="selectedBureau.numeroTel" required>
+        <label for="numeroTel">Numéro de téléphone</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un numéro de téléphone valide.
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
           <button class="btn btn-primary" @click="updateBureau">Enregistrer les modifications</button>
@@ -175,18 +199,70 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" v-if="selectedHotel">
-        <form>
-          <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="nom" v-model="selectedHotel.nom">
-          </div>
-          <!-- Add other input fields similarly -->
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" v-model="selectedHotel.email">
-          </div>
-        </form>
+  <form class="row g-3 needs-validation" novalidate>
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="nom" v-model="selectedHotel.nom" required>
+        <label for="nom">Nom</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un nom valide.
+        </div>
       </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="rue" v-model="selectedHotel.rue" required>
+        <label for="rue">Rue</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une rue valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="codePostal" v-model="selectedHotel.codePostal" required>
+        <label for="codePostal">Code postal</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un code postal valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="ville" v-model="selectedHotel.ville" required>
+        <label for="ville">Ville</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une ville valide.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" v-model="selectedHotel.email" required>
+        <label for="email">Email</label>
+        <div class="invalid-feedback">
+          Veuillez entrer une adresse email valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="numeroTel" v-model="selectedHotel.numeroTel" required>
+        <label for="numeroTel">Numéro de téléphone</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un numéro de téléphone valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" class="form-control" id="classement" v-model="selectedHotel.classement" required>
+        <label for="classement">Classement</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un classement valide.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" class="form-control" id="nombrechambres" v-model="selectedHotel.nombrechambres" required>
+        <label for="nombrechambres">Nombre de chambres</label>
+        <div class="invalid-feedback">
+          Veuillez entrer un nombre de chambres valide.
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
         <button type="button" class="btn btn-primary" @click="updateHotel(selectedHotel)">Enregistrer les modifications</button>
@@ -194,6 +270,7 @@
     </div>
   </div>
 </div>
+
 
 
     <!-- Ajouter Hotel Modal -->
@@ -205,62 +282,64 @@
         <h5 class="modal-title" id="ajouterHotelModalLabel">Ajouter un hôtel</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  ></button>
       </div>
-      <form @submit.prevent="createHotel">
-  <div class="modal-body">
-    <div class="row mb-3">
-      <label for="nom" class="col-sm-4 col-form-label">Nom</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="nom" v-model="newHotel.nom" required>
+      <form @submit.prevent="createHotel" class="row g-3 needs-validation" novalidate>
+  <div class="col-md-6">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="nom" v-model="newHotel.nom" required>
+      <label for="nom">Nom</label>
+      <div class="invalid-feedback">
+        Veuillez entrer un nom valide.
       </div>
     </div>
-
-    <div class="row mb-3">
-      <label for="classement" class="col-sm-4 col-form-label">Classement</label>
-      <div class="col-sm-8">
-        <input type="number" class="form-control" id="classement" min="0" max="5" v-model="newHotel.classement" required>
+    <div class="form-floating mb-3">
+      <input type="number" class="form-control" id="classement" min="0" max="5" v-model="newHotel.classement" required>
+      <label for="classement">Classement</label>
+      <div class="invalid-feedback">
+        Veuillez entrer un classement valide (entre 0 et 5).
       </div>
     </div>
-
-    <div class="row mb-3">
-      <label for="nombrechambres" class="col-sm-4 col-form-label">Nombre de chambres</label>
-      <div class="col-sm-8">
-        <input type="number" class="form-control" id="nombrechambres" v-model="newHotel.nombrechambres" required>
+    <div class="form-floating mb-3">
+      <input type="number" class="form-control" id="nombrechambres" v-model="newHotel.nombrechambres" required>
+      <label for="nombrechambres">Nombre de chambres</label>
+      <div class="invalid-feedback">
+        Veuillez entrer un nombre de chambres valide.
       </div>
     </div>
-
-    <div class="row mb-3">
-      <label for="rue" class="col-sm-4 col-form-label">Rue</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="rue" v-model="newHotel.rue" required>
+  </div>
+  <div class="col-md-6">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="rue" v-model="newHotel.rue" required>
+      <label for="rue">Rue</label>
+      <div class="invalid-feedback">
+        Veuillez entrer une rue valide.
       </div>
     </div>
-
-    <div class="row mb-3">
-      <label for="codePostal" class="col-sm-4 col-form-label">Code postal</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="codePostal" v-model="newHotel.codePostal" required>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="codePostal" v-model="newHotel.codePostal" required>
+      <label for="codePostal">Code postal</label>
+      <div class="invalid-feedback">
+        Veuillez entrer un code postal valide.
       </div>
     </div>
-
-    <div class="row mb-3">
-      <label for="ville" class="col-sm-4 col-form-label">Ville</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="ville" v-model="newHotel.ville" required>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="ville" v-model="newHotel.ville" required>
+      <label for="ville">Ville</label>
+      <div class="invalid-feedback">
+        Veuillez entrer une ville valide.
       </div>
     </div>
-
-    <div class="row mb-3">
-      <label for="email" class="col-sm-4 col-form-label">Email</label>
-      <div class="col-sm-8">
-        <input type="email" class="form-control" id="email" v-model="newHotel.email" required>
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="email" v-model="newHotel.email" required>
+      <label for="email">Email</label>
+      <div class="invalid-feedback">
+        Veuillez entrer une adresse email valide.
       </div>
     </div>
-
-
-    <div class="row mb-3">
-      <label for="numeroTel" class="col-sm-4 col-form-label">Numéro de téléphone</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="numeroTel" v-model="newHotel.numeroTel" required>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="numeroTel" v-model="newHotel.numeroTel" required>
+      <label for="numeroTel">Numéro de téléphone</label>
+      <div class="invalid-feedback">
+        Veuillez entrer un numéro de téléphone valide.
       </div>
     </div>
   </div>
@@ -268,12 +347,11 @@
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
     <button class="btn btn-primary">Ajouter</button>
   </div>
-
 </form>
-
     </div>
   </div>
 </div>
+
 
   </div>
 </div>
@@ -330,19 +408,27 @@
 </div>
 
 <div class="col-md-6">
-  <h5 class="mt-4">Hôtels</h5>
-  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#ajouterHotelModal" @click="openAjouterHotelModal(chaine.idchaine)" >Ajouter un hôtel</button>
-  
-  <ul class="list-group" style="max-height: 200px; overflow-y: scroll;">
-    <li v-for="hotel in chaine.hotels" :key="hotel.idhotel" class="list-group-item">
-      {{ hotel.nom }}, {{ hotel.rue }}, {{ hotel.ville }}
-      <div class="btn-group btn-group-sm mt-2 float-end" role="group">
-        <button class="btn btn-primary" @click="selectedHotel = hotel" data-bs-toggle="modal" data-bs-target="#modifierHotelModal">Modifier</button>
-        <button class="btn btn-danger" @click="deleteHotel(hotel.idhotel)">Supprimer</button>
+    <h5>Hôtels</h5>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#ajouterHotelModal" @click="openAjouterHotelModal(chaine.idchaine)">Ajouter un hôtel</button>
+    <div class="list-group" style="max-height: 200px; overflow-y: scroll;">
+      <div v-for="hotel in chaine.hotels" :key="hotel.idhotel" class="list-group-item list-group-item-action py-3">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ hotel.nom }}</h5>
+        </div>
+        <small class="text-muted">
+          <strong>Adresse :</strong> {{ hotel.rue }}, {{ hotel.codePostal }}, {{ hotel.ville }}<br>
+          <strong>Email :</strong> {{ hotel.email }}<br>
+               <strong>Numéro de téléphone :</strong> {{ hotel.numeroTel }}<br>
+          <strong>Classement :</strong> {{ hotel.classement }}<br>
+          <strong>Nombre de chambres :</strong> {{ hotel.nombrechambres }}<br>
+        </small>
+        <div class="btn-group btn-group-sm mt-2 float-end" role="group">
+          <button class="btn btn-primary" @click="selectedHotel = hotel" data-bs-toggle="modal" data-bs-target="#modifierHotelModal">Modifier</button>
+          <button class="btn btn-danger" @click="deleteHotel(hotel.idhotel)">Supprimer</button>
+        </div>
       </div>
-    </li>
-  </ul>
-</div>
+    </div>
+  </div>
 
             
 
@@ -366,7 +452,7 @@
 
   </div>
   <!-- Ajouter juste après la balise de fermeture </div> de l'élément #chainesAccordion -->
-<div class="modal fade" id="modifierChaineModal" tabindex="-1" aria-labelledby="modifierChaineModalLabel" aria-hidden="true">
+  <div class="modal fade" id="modifierChaineModal" tabindex="-1" aria-labelledby="modifierChaineModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -394,6 +480,7 @@
 </div>
 
 
+
 <div class="modal fade" id="ajouterChaineModal" tabindex="-1" aria-labelledby="ajouterChaineModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -402,55 +489,56 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="nomChaine" class="form-label">Nom de la chaîne</label>
-                <input type="text" class="form-control" id="nomChaine" v-model="nouvelleChaine.nom">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="nombreHotel" class="form-label">Nombre d'hôtels</label>
-                <input type="number" class="form-control" id="nombreHotel" v-model="nouvelleChaine.nombrehotel">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="rueBureau" class="form-label">Rue du bureau</label>
-                <input type="text" class="form-control" id="rueBureau" v-model="nouveauBureau.rue">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="codePostalBureau" class="form-label">Code postal du bureau</label>
-                <input type="text" class="form-control" id="codePostalBureau" v-model="nouveauBureau.codePostal">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="villeBureau" class="form-label">Ville du bureau</label>
-                <input type="text" class="form-control" id="villeBureau" v-model="nouveauBureau.ville">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="emailBureau" class="form-label">Email du bureau</label>
-                <input type="email" class="form-control" id="emailBureau" v-model="nouveauBureau.email">
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="numeroTelBureau" class="form-label">Numéro de téléphone du bureau</label>
-            <input type="text" class="form-control" id="numeroTelBureau" v-model="nouveauBureau.numeroTel">
-          </div>
-        </form>
+  <form>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3 floating-form">
+          <label for="nomChaine" class="form-label">Nom de la chaîne</label>
+          <input type="text" class="form-control" id="nomChaine" v-model="nouvelleChaine.nom">
         </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3 floating-form">
+          <label for="nombreHotel" class="form-label">Nombre d'hôtels</label>
+          <input type="number" class="form-control" id="nombreHotel" v-model="nouvelleChaine.nombrehotel">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3 floating-form">
+          <label for="rueBureau" class="form-label">Rue du bureau</label>
+          <input type="text" class="form-control" id="rueBureau" v-model="nouveauBureau.rue">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3 floating-form">
+          <label for="codePostalBureau" class="form-label">Code postal du bureau</label>
+          <input type="text" class="form-control" id="codePostalBureau" v-model="nouveauBureau.codePostal">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3 floating-form">
+          <label for="villeBureau" class="form-label">Ville du bureau</label>
+          <input type="text" class="form-control" id="villeBureau" v-model="nouveauBureau.ville">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3 floating-form">
+          <label for="emailBureau" class="form-label">Email du bureau</label>
+          <input type="email" class="form-control" id="emailBureau" v-model="nouveauBureau.email">
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 floating-form">
+      <label for="numeroTelBureau" class="form-label">Numéro de téléphone du bureau</label>
+      <input type="text" class="form-control" id="numeroTelBureau" v-model="nouveauBureau.numeroTel">
+    </div>
+  </form>
+</div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
           <button type="button" class="btn btn-primary" @click="ajouterChaine()">Ajouter</button>
@@ -669,7 +757,6 @@ console.error('Error fetching hotel information:', error);
 ,
 
     updateChaine() {
-      console.log(this.selectedChaine)
     const { idchaine, nom, nombrehotel } = this.selectedChaine;
     fetch(`http://localhost:3000/chaines-hotels/${idchaine}`, {
       method: 'PUT',
