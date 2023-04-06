@@ -46,22 +46,61 @@
         <button class="btn btn-success float-end" @click="addLocation">Ajouter</button>
       </div>
     </div>
+    <div class="row mb-4">
+  <div class="col-md-6">
+    <div class="input-group">
+      <select class="form-select" v-model="orderBy">
+        <option value="">Trier par</option>
+        <option v-for="(value, key) in orderKeys" :key="key" :value="key">{{ value }}</option>
+      </select>
+      
+    </div>
+    <button class="btn btn-primary m-2" @click="reverseOrder = !reverseOrder">
+        {{ reverseOrder ? 'Décroissant' : 'Croissant' }}
+      </button>
+  </div>
+</div>
+
     <table class="table table-striped table-hover">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Chambre</th>
-          <th>Client</th>
-          <th>Employé</th>
-          <th>Check-in</th>
-          <th>Check-out</th>
+  <tr>
+    <th>
+      ID
 
-            <th>Paiement</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+    </th>
+    <th>
+      Chambre
+
+    </th>
+    <th>
+      Client
+
+    </th>
+    <th>
+      Employé
+
+    </th>
+    <th>
+      Check-in
+  
+    </th>
+    <th>
+      Check-out
+  
+    </th>
+    <th>
+      Paiement
+    
+    </th>
+    <th>
+      Archive
+ 
+    </th>
+    <th>Actions</th>
+  </tr>
+</thead>
         <tbody>
-          <tr v-for="location in locations.locations" :key="location.idLocation">
+          <tr v-for="location in sortedLocations" :key="location.idLocation">
             <td>{{ location.idLocation }}</td>
             <td>{{ location.idChambre }}</td>
             <td>{{ location.NASclient }}</td>
@@ -69,9 +108,16 @@
             <td>{{ new Date(location.checkIndDate).toISOString().split('T')[0] }}</td>
 <td>{{ new Date(location.checkOutDate).toISOString().split('T')[0] }}</td>
             <td>{{ location.paiement }}</td>
+            <td>{{ location.archive === 1 ? 'Archivé' : 'Non archivé' }}</td>
             <td>
-              <button class="btn btn-outline-primary btn-sm" @click="showEditModal(location)">Edit</button>
-              <button class="btn btn-outline-danger btn-sm" @click="deleteLocation(location.idLocation)">Delete</button>
+              <div class="row justify-content-center align-items-center g-2">
+                <div class="col">              
+                  <button class="btn btn-outline-primary btn-sm" @click="showEditModal(location)">Modifier</button>
+                  </div>
+                <div class="col">              
+                  <button class="btn btn-outline-danger btn-sm ml-1" @click="deleteLocation(location.idLocation)">Supprimer</button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -152,6 +198,18 @@
     data() {
       return {
         locations: [],
+        orderBy: '',
+        reverseOrder: false,
+        orderKeys: {
+        idLocation: 'ID',
+        idChambre: 'Chambre',
+        NASclient: 'Client',
+        NASemploye: 'Employé',
+        checkIndDate: 'Check-in',
+        checkOutDate: 'Check-out',
+        paiement: 'Paiement',
+        archive: 'Archive',
+      },
         selectedReservation: {}, // Ajouter cette propriété
         newLocation: {
         idChambre: "",
@@ -165,6 +223,21 @@
 
       };
     },
+ computed: {
+  sortedLocations() {
+    console.log('sortedLocations computed property triggered');
+    let sorted = [...this.locations.locations];
+    if (this.orderBy) {
+      sorted.sort((a, b) => {
+        if (a[this.orderBy] < b[this.orderBy]) return this.reverseOrder ? 1 : -1;
+        if (a[this.orderBy] > b[this.orderBy]) return this.reverseOrder ? -1 : 1;
+        return 0;
+      });
+    }
+    return sorted;
+  },
+},
+
     created() {
       this.fetchLocations();
     },

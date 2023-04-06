@@ -34,6 +34,7 @@
           <option value="NASclient">NAS client</option>
           <option value="checkInDate">Arrivée</option>
           <option value="checkOutDate">Départ</option>
+          <option value="archive">Archives</option>
         </select>
       </div>
     </div>
@@ -50,18 +51,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="reservation in orderedReservations" :key="reservation.idReservation">
-          <td>{{ reservation.idReservation }}</td>
-          <td>{{ reservation.idChambre }}</td>
-          <td>{{ reservation.NASclient }}</td>
-          <td>{{ new Date(reservation.checkInDate).toLocaleDateString() }}</td>
-          <td>{{ new Date(reservation.checkOutDate).toLocaleDateString() }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" @click="editReservation(reservation)">Modifier</button>
-            <button class="btn btn-danger btn-sm" @click="deleteReservation(reservation.idReservation)">Supprimer</button>
-          </td>
-        </tr>
-      </tbody>
+  <tr v-for="reservation in orderedReservations" :key="reservation.idReservation">
+    <td>{{ reservation.idReservation }}</td>
+    <td>{{ reservation.idChambre }}</td>
+    <td>{{ reservation.NASclient }}</td>
+    <td>{{ new Date(reservation.checkInDate).toLocaleDateString() }}</td>
+    <td>{{ new Date(reservation.checkOutDate).toLocaleDateString() }}</td>
+    <td>
+      <button class="btn btn-primary btn-sm me-2" @click="editReservation(reservation)">Modifier</button>
+      <button class="btn btn-success btn-sm me-2" v-if="reservation.archive === 0" @click="convertReservationToLocation(reservation)">Location</button>
+
+      <button class="btn btn-danger btn-sm" @click="deleteReservation(reservation.idReservation)">Supprimer</button>
+      
+    </td>
+  </tr>
+</tbody>
+
     </table>
 
 <!-- Edit Reservation Modal -->
@@ -118,7 +123,7 @@ export default {
       newReservation:{},
       currentReservation: {},
       loading: true,
-      orderBy: 'idReservation', // default order by column
+      orderBy: 'checkInDate', // default order by column
 
     };
   },
@@ -202,7 +207,45 @@ updateReservation() {
     this.fetchReservations();
   })
   .catch(error => console.error('Error adding reservation:', error));
+},
+convertReservationToLocation(reservation) {
+  const locationData = {
+    idReservation:reservation.idReservation,
+    idChambre: reservation.idChambre,
+    NASclient: reservation.NASclient,
+    checkIndDate: reservation.checkInDate,
+    checkOutDate: reservation.checkOutDate,
+    paiement: "Pas payé", // à remplacer par le mode de paiement choisi
+  };
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${this.$root.token}`
+    },
+    body: JSON.stringify(locationData)
+  };
+
+  fetch('http://localhost:3000/convertReservationToRental', requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to convert reservation to rental');
+      }
+      alert('Réservation convertie avec succès en location'); // Add this line
+
+      return response.text();
+    })
+    .then(data => {
+      console.log(data);
+      this.fetchReservations()
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }
+
+
 
   },
   created() {
@@ -211,8 +254,8 @@ updateReservation() {
   computed: {
     orderedReservations() {
       return this.reservations.slice().sort((a, b) => {
-        if (a[this.orderBy] < b[this.orderBy]) return -1;
-        if (a[this.orderBy] > b[this.orderBy]) return 1;
+        if (a[this.orderBy] > b[this.orderBy]) return -1;
+        if (a[this.orderBy] < b[this.orderBy]) return 1;
         return 0;
       });
     },
@@ -265,6 +308,13 @@ updateReservation() {
     border-color: #007bff;
   }
 
+.btn-success{
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+   
+  }
   .btn-primary:hover {
     background-color: #0069d9;
     border-color: #0062cc;

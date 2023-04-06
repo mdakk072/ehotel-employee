@@ -97,8 +97,9 @@
   <div class="col-md-6"><strong>Équipements :</strong></div>
   <div class="col-md-5">
     <div class="list-group" style="max-height: 200px; overflow-y: auto;">
-      <a href="#" class="list-group-item" v-for="(equipement, index) in getEquipements()" :key="equipement" v-if="index < 3">{{ equipement }}</a>
-      <a href="#" class="list-group-item" data-bs-toggle="modal" data-bs-target="#equipementsModal" v-else>...</a>
+      <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#equipementsModal" style=" border: none;">
+  <i class="fas fa-eye"></i> Afficher plus
+</button>
     </div>
   </div>
 </div>
@@ -555,4 +556,35 @@ getVue() {
 .fw-bold {
   font-weight: bold;
 }
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+  .card-header {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .table {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+  }
+
+  .table td,
+  .table th {
+    border: none;
+    padding: 0.5rem;
+  }
+
+  .table th {
+    background-color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+  }
+
 </style>

@@ -886,6 +886,8 @@ addEmployee() {
         // Gérer l'erreur de requête
         console.error('Error deleting employee and role:', error);
       }
+      this.getData();
+
     },
 
   
