@@ -6,6 +6,7 @@ import Page1 from '../components/Page1.vue'
 import LoginClientpage from '../views/client/LoginClientPage.vue'
 import BookRoomView from '../views/client/BookRoomView.vue'
 import ChambresClientView from '../views/client/ChambresClientView.vue'
+import MyReservationsView from '../views/client/MyReservationsView.vue'
 
 const routes = [
   {
@@ -115,6 +116,12 @@ const routes = [
   name: 'Chambres Client Page',
   props: true ,
   component: ChambresClientView
+  },{
+
+  path: '/myReservations/:token',
+  name: 'My Reservations Page',
+  props: true ,
+  component: MyReservationsView
   },
   
   

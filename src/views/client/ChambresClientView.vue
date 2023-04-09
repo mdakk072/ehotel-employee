@@ -107,172 +107,66 @@
             <td>{{ chambre.etendue }}</td>
             <td>{{ chambre.commodites}}</td>
             <td>
-              <button class="btn btn-primary" @click="reserveChambre(index)">Réserver</button>
+              <button class="btn btn-primary" @click="addReservation(chambre)">Réserver</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   
-      <div class="modal fade" tabindex="-1" role="dialog" v-bind:class="{ 'show': selectedChambre, 'd-block': selectedChambre }">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Chambre {{ selectedChambre ? selectedChambre.idChambre : '' }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="hideDetails"></button>
-        </div>
-        <div class="modal-body" v-if="selectedChambre">
-          <form>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label for="prix" class="form-label">Prix</label>
-          <input type="number" class="form-control" id="prix" v-model="selectedChambre.prix">
-        </div>
-        <div class="mb-3">
-          <label for="capaciteChambre" class="form-label">Capacité</label>
-          <input type="number" class="form-control" id="capaciteChambre" v-model="selectedChambre.capaciteChambre">
-        </div>
-        <div class="mb-3">
-          <label for="disponibilite" class="form-label">Disponibilité</label>
-          <select class="form-select" id="disponibilite" v-model="selectedChambre.disponible">
-          <option value="1">Disponible</option>
-          <option value="0">Indisponible</option>
-          </select>
-  
-        </div>
+    <!-- Add Reservation Modal -->
+    <div class="modal fade" id="editReservationModal" tabindex="-1" aria-labelledby="editReservationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editReservationModalLabel">Créer une réservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label for="vue" class="form-label" >Vue</label>
-          <select class="form-select" id="vue" v-model="selectedChambre.vue">
-            <option value="Vue sur la ville">Vue sur la ville</option>
-            <option value="Vue sur la mer">Vue sur la mer</option>
-            <option value="Vue sur le jardin">Vue sur le jardin</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="etendue" class="form-label">Etendue</label>
-          <select class="form-select" id="etendue" v-model="selectedChambre.etendue">
-            <option value="Petite">Petite</option>
-            <option value="Moyenne">Moyenne</option>
-            <option value="Grande">Grande</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="probleme" class="form-label">Problème</label>
-          <textarea class="form-control" id="probleme" placeholder="Aucun problème" v-model="selectedChambre.probleme"></textarea>
-        </div>
+      <div class="modal-body">
+        <form>
+          <!-- <div class="mb-3" v-if="currentReservation">
+            <label for="roomSelect" class="form-label">Chambre</label>
+            <select class="form-select form-select-sm" id="roomSelect" v-model="currentReservation.idChambre">
+              <option v-for="chambre in chambres" :key="chambre.idChambre" :value="chambre.idChambre">{{ chambre.idChambre }}</option>
+            </select>
+          </div> -->
+
+          <div class="mb-3">
+            <div class="col-md-9">Chambre: {{ selectedChambre ? selectedChambre.idChambre : '' }}</div>
+          </div>
+
+          <div class="mb-3">
+            <div class="col-md-9">NAS client : {{ infos.client.NAS }}</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="checkInInput" class="form-label">Date d'arrivée</label>
+            <input type="date" class="form-control form-control-lg" id="checkInInput" v-model="newReservation.checkInDate">
+          </div>
+          <div class="mb-3">
+            <label for="checkOutInput" class="form-label">Date de départ</label>
+            <input type="date" class="form-control form-control-lg" id="checkOutInput" v-model="newReservation.checkOutDate">
+          </div>
+
+        </form>
+
       </div>
-    </div>
-  </form>
-  
-  <div class="mb-3">
-    <label for="commodites" class="form-label">Commodités</label>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Nom</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody  v-if="selectedChambre.commodites">
-    <tr v-for="(commodite, index) in selectedChambre.commodites" :key="index">
-      <td><input type="text" class="form-control" v-model="selectedChambre.commodites[index]"></td>
-      <td>
-        <button type="button" class="btn btn-danger btn-sm float-end" v-on:click="removeCommodite(commodite)">Supprimer</button>
-      </td>
-    </tr>
-  </tbody>
-  
-    </table>
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" id="commodites" placeholder="Ajouter une commodité" v-model="newCommodite">
-    <button type="button" class="btn btn-primary" v-on:click="addCommodite" :disabled="newCommodite === ''">Ajouter</button>
-  </div>
-  
-  
-  
-  </div>
-  
-  
-  
-  
-        </div>
-        <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="hideDetails">Annuler</button>
-    <button type="button" class="btn btn-primary" v-on:click="updateChambre" v-if="selectedChambre">Modifier chambre</button>
-    <button type="button" class="btn btn-danger" v-on:click="deleteChambre" v-if="selectedChambre">Supprimer chambre</button>
-  </div>
-  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" @click="updateReservation(selectedChambre.idChambre)">Confirmer Réservation</button>
       </div>
     </div>
   </div>
-  
-  
+</div>
+
+
     </div>
         </div>
       </div>
      
-    </div>
+    </div> 
   
-    <!-- Ajouter chambre modale -->
-  <div class="modal fade" id="ajouterChambreModal" tabindex="-1" aria-labelledby="ajouterChambreModalLabel" >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ajouterChambreModalLabel">Ajouter une chambre</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label for="prix" class="form-label">Prix</label>
-        <input type="number" class="form-control" id="prix" v-model="newChambre.prix">
-      </div>
-      <div class="col-md-6 mb-3">
-        <label for="capaciteChambre" class="form-label">Capacité</label>
-        <input type="number" class="form-control" id="capaciteChambre" v-model="newChambre.capaciteChambre">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label for="disponibilite" class="form-label">Disponibilité</label>
-        <select class="form-select" id="disponibilite" v-model="newChambre.disponibilite">
-          <option value="true">Disponible</option>
-          <option value="false">Indisponible</option>
-        </select>
-      </div>
-      <div class="col-md-6 mb-3">
-        <label for="vue" class="form-label">Vue</label>
-        <select class="form-select" id="vue" v-model="newChambre.vue">
-          <option value="Vue sur la ville">Vue sur la ville</option>
-          <option value="Vue sur la mer">Vue sur la mer</option>
-          <option value="Vue sur le jardin">Vue sur le jardin</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label for="etendue" class="form-label">Etendue</label>
-        <select class="form-select" id="etendue" v-model="newChambre.etendue">
-          <option value="Petite">Petite</option>
-          <option value="Moyenne">Moyenne</option>
-          <option value="Grande">Grande</option>
-        </select>
-      </div>
-      <div class="col-md-6 mb-3">
-        <label for="probleme" class="form-label">Problème</label>
-        <input type="text" class="form-control" id="probleme" placeholder="Aucun problème" v-model="newChambre.probleme">
-      </div>
-    </div>
-  </form>
-        </div>
-      </div>
-    </div>
-  </div> 
-  
+
   </template>
   
   <script>
@@ -280,7 +174,8 @@
     name: 'ChambresClientView',
     data() {
       return {
-  
+        newReservation:{},
+        infos: {},
         newChambre: {
         prix: null,
         capaciteChambre: null,
@@ -306,7 +201,34 @@
       console.log(idhotel);
       this.getData(idhotel);
   
-     // this.employe.idhotel = 
+       // Envoyer une requête GET au serveur avec le token de l'utilisateur pour récupérer les informations générales
+  fetch('http://localhost:3000/mainProfileInfosClient', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${this.$route.params.token}`
+    }
+  })
+  .then(response => {
+    // Vérifier le code de statut de la réponse
+    if (response.status === 200) {
+      // Convertir la réponse en JSON
+      response.json().then(data => {
+        // Afficher le JSON reçu dans la console
+        console.log(data);
+        // Mettre à jour les informations de l'utilisateur
+        this.infos = data;
+      });
+    } else {
+      // Afficher un message d'erreur
+      console.error('Erreur de connexion')
+    }
+  })
+  .catch(error => {
+    console.error(error)
+  });
+     
+
   
       },
       computed: {
@@ -397,19 +319,46 @@
       
       hideDetails() {
         this.selectedChambre = null;
-      }
+      },
+
+addReservation(chambre) {
+  this.currentChambre = {
+    ...chambre,
+    checkInDate: new Date(),
+    checkOutDate: new Date(),
+  };
+  $('#editReservationModal').modal('show');
+},
+
+updateReservation(idChambre) {
+  const NASclient = this.infos.client.NAS;
+  const {checkInDate, checkOutDate } = this.newReservation;
+  const url = 'http://localhost:3000/reservations';
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ idChambre, NASclient, checkInDate, checkOutDate })
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+    this.newReservation = {};
+    // Fermer la fenêtre modale
+    $('#editReservationModal').modal('hide');
+  })
+  .catch(error => console.error('Error adding reservation:', error));
+}
+
     },mounted() {
     //TODO maybe
   },
     }
   </script>
   
-  <style scoped>
-  
-  
-  
-  
-  
+  <style scoped>  
     .table-light td {
       background-color: #e7f5ff;
     }
@@ -428,7 +377,7 @@
   }
   
   h1 {
-    color: #fff;
+    color: #070707;
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -472,7 +421,14 @@
     margin-bottom: 5px;
   }
   
-  
+  #editReservationModal .modal-dialog {
+    max-width: 500px;
+  }
+
+  #editReservationModal .modal-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
   
   
   

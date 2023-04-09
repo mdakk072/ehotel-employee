@@ -34,7 +34,7 @@
       <strong>Rue :</strong> {{ bureau.rue }}<br>
       <strong>Code postal :</strong> {{ bureau.codePostal }}<br>
       <strong>Email :</strong> {{ bureau.email }}<br>
-      <strong>Numéro de téléphone :</strong> {{ bureau.numeroDeTelephone }}
+      <strong>Numéro de téléphone :</strong> {{ bureau.numeroTel }}
     </small>
   </div>
   
@@ -49,9 +49,13 @@
     
     <ul class="list-group" style="max-height: 200px; overflow-y: scroll;">
       <li v-for="hotel in chaine.hotels" :key="hotel.idhotel" class="list-group-item">
-        <strong>Nom: </strong>{{ hotel.nom }}, 
-        <strong>Rue: </strong>{{ hotel.rue }}, 
-        <strong>Ville: </strong>{{ hotel.ville }}
+        <small class="text-muted">
+          <strong>Classement :</strong> {{ hotel.classement }} étoiles<br>
+          <strong>Nombre de chambres :</strong> {{ hotel.nombrechambres }} chambres<br>
+          <strong>Adresse :</strong> {{ hotel.rue }}, {{ hotel.ville }}, {{ hotel.codePostal }}<br>
+          <strong>Email :</strong> {{ hotel.email }}<br>
+          <strong>Numéro de téléphone :</strong> {{ hotel.numeroTel }}
+        </small>
         <div class="btn-group btn-group-sm mt-2 float-end" role="group">
           <!-- <button class="btn btn-primary" @click="selectedHotel = hotel" data-bs-toggle="modal" data-bs-target="#modifierHotelModal">Modifier</button> -->
           <router-link :to="'/chambresClient/' + $root.token +'/'+ hotel.idhotel">
@@ -90,7 +94,6 @@
     data() {
       return {
         currentChaineId: -1,
-  
         newHotel: {},
         nouvelleChaine: {
           nom: '',
